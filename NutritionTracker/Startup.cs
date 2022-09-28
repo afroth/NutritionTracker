@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NutritionTracker.Data;
-
+using MediatR;
 namespace NutritionTracker
 {
     public class Startup
@@ -36,6 +36,7 @@ namespace NutritionTracker
             });
 
             services.AddScoped<IngredientService>();
+            services.AddMediatR(typeof(Program));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

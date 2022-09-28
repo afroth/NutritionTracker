@@ -76,44 +76,5 @@ namespace NutritionTracker.Data
                 throw;
             }
         }
-
-
-        //List<Ingredient> ingredientList = new List<Ingredient>();
-
-        ////*******************************************************************************
-        //// adds the new ingredient to the list of ingredients
-        //public void addIngredient(Ingredient o)
-        //{
-        //    ingredientList.Add(o);
-        //}
-
-        ////*******************************************************************************
-        //// removes the ingredient based on the name of ingredient passed in.
-        //public void removeIngredient(string name)
-        //{
-        //    // assigns a bool value based on if there are any matches found in function call
-        //    // ingredientNameCheck.
-        //    bool ingredientExists = ingredientNameCheck(name);
-
-        //   // if thereis no matches do nothing
-        //    if (ingredientExists == false) { }
-
-        //    // if there is a match remove all matches.
-        //    else ingredientList.RemoveAll(o => o.ingredientName == name);
-        //}
-
-        ////*******************************************************************************
-        ////finds all object matches of the ingredient name in the List
-        //public bool ingredientNameCheck(string name)
-        //{
-        //    // finds all matches in the list where the objects have the same ingredient name;
-        //    var matches = ingredientList.Where(o => o.ingredientName == name);
-
-        //    // return true if there are matches
-        //    if (matches != null) { return true; }
-
-        //    return false;
-        //}
-
     } //end class     
 }// end namespace

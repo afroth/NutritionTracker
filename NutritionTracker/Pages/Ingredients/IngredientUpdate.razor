@@ -1,0 +1,72 @@
+﻿@using NutritionTracker.Data;
+@using NutritionTracker.Models;
+
+@inject IngredientService service
+
+<div class="col-5 bg-light m-2 justify-content-end">
+    <div class="p-3 mb-1 bg-primary text-white text-center">Update Ingredient</div>
+
+    <EditForm Model="@UpdateIngredient">
+        <div class="form-group">
+            <label for="name">Ingredient Name</label>
+            <input type="text" id="name" class="form-control" @bind-value="@UpdateIngredient.ingredientName" />
+        </div>
+
+        <div class="form-group">
+            <label for="price">Calories</label>
+            <input type="text" id="price" class="form-control" @bind="@UpdateIngredient.calories" />
+        </div>
+
+        <div class="form-group">
+            <label for="quantity">Fats</label>
+            <input type="text" id="quantity" class="form-control" @bind="@UpdateIngredient.fats" />
+        </div>
+
+        <div class="form-group">
+            <label for="Description">Protein</label>
+            <input type="text" id="Description" class="form-control" @bind="@UpdateIngredient.protein" />
+        </div>
+
+        <div class="form-group">
+            <label for="Description">Sugar</label>
+            <input type="text" id="Description" class="form-control" @bind="@UpdateIngredient.sugar" />
+        </div>
+
+        <div class="form-group">
+            <label for="Description">Carbs</label>
+            <input type="text" id="Description" class="form-control" @bind="@UpdateIngredient.carbs" />
+        </div>
+
+        <div class="text-center p-3 mb-3">
+            <button class="btn btn-info" @onclick="UpdateIngredientData"> Update Product</button>
+        </div>
+
+    </EditForm>
+</div>
+@code {
+    List<Ingredient> Ingredients = new List<Ingredient>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshIngredients();
+    }
+
+    private async Task RefreshIngredients()
+    {
+        Ingredients = await service.GetIngredientAsync();
+    }
+
+    Ingredient UpdateIngredient = new Ingredient();
+    private void SetIngredientForUpdate(Ingredient ingredient)
+    {
+        UpdateIngredient = ingredient;
+    }
+
+    private async Task UpdateIngredientData()
+    {
+        await service.UpdateIngredientAsync(UpdateIngredient);
+        await RefreshIngredients();
+    }
+
+
+}
