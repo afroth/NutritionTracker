@@ -5,29 +5,39 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using NutritionTracker.Commands;
+using NutritionTracker.Pages.Ingredients.Commands;
 using NutritionTracker.Data;
 using NutritionTracker.Models;
-using NutritionTracker.Queries;
-
 
 namespace NutritionTracker.Handlers
 {
-    //public class IngredDeleteHandler : IRequestHandler<IngredientCommand, Ingredient>
-    //{
+    public class IngredDeleteHandler : IRequestHandler<IngredDeleteCommand, Ingredient>
+    {
+        private readonly IngredientDbContext _db;
 
-    //    private readonly IngredientDbContext _db;
+        public IngredDeleteHandler(IngredientDbContext db)
+        {
+            _db = db;
+        }
 
-    //    public IngredDeleteHandler(IngredientDbContext db)
-    //    {
-    //        _db = db;
-    //    }
+        public async Task<Ingredient> Handle(IngredDeleteCommand request, CancellationToken cancellationToken)
+        {
+            var ingredient = new Ingredient
+            {
+                ingredientName = request.IngredientName, 
+            };
 
-
-    //    public async Task<Ingredient> Handle(IngredientCommand request, CancellationToken cancellationToken)
-    //    {
-    //        var ingredient = await _db.Ingredient.FindAsync(Ingredient);
-    //        return _db.Ingredient.Remove(Ingredient);
-    //    }
-    //}
+            var removeIngredient = await _db.Ingredient.FindAsync(ingredient.ingredientName);
+            try
+            {
+                _db.Ingredient.Remove(removeIngredient);
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return ingredient;
+        }
+    }    
 }

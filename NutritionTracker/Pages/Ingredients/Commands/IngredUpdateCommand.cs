@@ -7,8 +7,7 @@ using NutritionTracker.Models;
 
 namespace NutritionTracker.Pages.Ingredients.Commands
 {
-    
-   public class IngredAddCommand : IRequest<Ingredient>
+    public class IngredUpdateCommand : IRequest<Ingredient>
     {
         public string IngredientName { get; set; }
         public int Calories { get; set; }
@@ -19,9 +18,9 @@ namespace NutritionTracker.Pages.Ingredients.Commands
 
         //*******************************************************************************
         // constructor
-        public IngredAddCommand(Ingredient ingredient)
+        public IngredUpdateCommand(Ingredient ingredient)
         {
-            IngredientName =  ingredient.ingredientName;
+            IngredientName = ingredient.ingredientName;
             Calories = ingredient.calories;
             Fats = ingredient.fats;
             Protein = ingredient.protein;

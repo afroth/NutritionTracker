@@ -29,19 +29,19 @@ namespace NutritionTracker.Data
 
         //*******************************************************************************
         // add to database
-        public async Task<Ingredient> AddIngredientAsync(Ingredient ingredient)
-        {
-            try
-            {
-                dbContext.Ingredient.Add(ingredient);
-                await dbContext.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return ingredient;
-        }
+        //public async Task<Ingredient> AddIngredientAsync(Ingredient ingredient)
+        //{
+        //    try
+        //    {
+        //        dbContext.Ingredient.Add(ingredient);
+        //        await dbContext.SaveChangesAsync();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //    return ingredient;
+        //}
 
         //*******************************************************************************
         // update database to database
@@ -64,17 +64,17 @@ namespace NutritionTracker.Data
         }
         //*******************************************************************************
         // delete from database
-        public async Task DeleteIngredientAsync(Ingredient ingredient)
-        {
-            try
-            {
-                dbContext.Ingredient.Remove(ingredient);
-                await dbContext.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        //public async Task DeleteIngredientAsync(Ingredient ingredient)
+        //{
+        //    try
+        //    {
+        //        dbContext.Ingredient.Remove(ingredient);
+        //        await dbContext.SaveChangesAsync();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
     } //end class     
 }// end namespace

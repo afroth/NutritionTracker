@@ -1,15 +1,26 @@
 ﻿@using NutritionTracker.Data;
 @using NutritionTracker.Models;
+@using NutritionTracker.Pages.Ingredients.Queries;
+@using NutritionTracker.Pages;
 
+@inject MediatR.IMediator _mediatr
 @inject IngredientService service
 
 <div class="col-5 bg-light m-2 justify-content-end">
     <div class="p-3 mb-1 bg-primary text-white text-center">Update Ingredient</div>
 
     <EditForm Model="@UpdateIngredient">
-        <div class="form-group">
+        <div>
             <label for="name">Ingredient Name</label>
-            <input type="text" id="name" class="form-control" @bind-value="@UpdateIngredient.ingredientName" />
+            <select tabindex="0" class="form-control" @onchange="RefreshIngredients" >
+
+                @foreach (var ingredient in Ingredients)
+                {
+
+                    <option value="@ingredient.ingredientName" >@ingredient.ingredientName</option>
+
+                }
+            </select>
         </div>
 
         <div class="form-group">
@@ -43,30 +54,76 @@
 
     </EditForm>
 </div>
-@code {
-    List<Ingredient> Ingredients = new List<Ingredient>();
 
+@code {
+    List<Ingredient> Ingredients { get; set; }
+    Ingredient UpdateIngredient = new Ingredient();
+    Ingredient selectedIngredient = new Ingredient();
+
+    //*******************************************************************************
     protected override async Task OnInitializedAsync()
     {
-        await RefreshIngredients();
+
+        Ingredients = await _mediatr.Send(new IngredientListQuery());
+        await SetIngredientForUpdate();
     }
 
-    private async Task RefreshIngredients()
+    //*******************************************************************************
+    private void RefreshIngredients(ChangeEventArgs args)
     {
-        Ingredients = await service.GetIngredientAsync();
+
+        GetIngredientData(args);
+
+        Console.WriteLine("Selected Ingredient name " + selectedIngredient.ingredientName);
+        Console.WriteLine("Ingredient name " + UpdateIngredient.ingredientName);
+
     }
 
-    Ingredient UpdateIngredient = new Ingredient();
-    private void SetIngredientForUpdate(Ingredient ingredient)
+    //*******************************************************************************
+    private void  GetIngredientData(ChangeEventArgs args)
     {
-        UpdateIngredient = ingredient;
+        selectedIngredient.ingredientName = args.Value.ToString();
+
+        try
+        {
+            var ingredientExist = Ingredients.FirstOrDefault(o => o.ingredientName.Equals(selectedIngredient.ingredientName, StringComparison.OrdinalIgnoreCase));
+            if (ingredientExist != null)
+            {
+                UpdateIngredient = ingredientExist;
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
+    //*******************************************************************************
+    private async Task SetIngredientForUpdate()
+    {
+        selectedIngredient.ingredientName = Ingredients.FirstOrDefault().ingredientName;
+        UpdateIngredient = await _mediatr.Send(new IngredientByNameQuery(selectedIngredient));
+    }
+
+    //*******************************************************************************
+    private async Task Selected(ChangeEventArgs args)
+    {
+
+
+        selectedIngredient.ingredientName = args.Value.ToString();
+        //await getIngredientData();
+        UpdateIngredient = await _mediatr.Send(new IngredientByNameQuery(selectedIngredient));
+
+
+        Console.WriteLine("Selected Ingredient name " + selectedIngredient.ingredientName);
+        Console.WriteLine("Ingredient name " + UpdateIngredient.ingredientName);
+
+    }
+
+    //*******************************************************************************
     private async Task UpdateIngredientData()
     {
         await service.UpdateIngredientAsync(UpdateIngredient);
-        await RefreshIngredients();
+        // await RefreshIngredients();
     }
-
-
 }
