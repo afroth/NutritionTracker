@@ -9,16 +9,14 @@
 <div class="col-5 bg-light m-2 justify-content-end">
     <div class="p-3 mb-1 bg-primary text-white text-center">Update Ingredient</div>
 
-    <EditForm Model="@UpdateIngredient">
+    
         <div>
             <label for="name">Ingredient Name</label>
-            <select tabindex="0" class="form-control" @onchange="RefreshIngredients" >
+            <select class="form-control" @onchange="Selected" >
 
                 @foreach (var ingredient in Ingredients)
                 {
-
                     <option value="@ingredient.ingredientName" >@ingredient.ingredientName</option>
-
                 }
             </select>
         </div>
@@ -50,12 +48,11 @@
 
         <div class="text-center p-3 mb-3">
             <button class="btn btn-info" @onclick="UpdateIngredientData"> Update Product</button>
-        </div>
-
-    </EditForm>
+        </div> 
 </div>
 
 @code {
+
     List<Ingredient> Ingredients { get; set; }
     Ingredient UpdateIngredient = new Ingredient();
     Ingredient selectedIngredient = new Ingredient();
@@ -63,67 +60,30 @@
     //*******************************************************************************
     protected override async Task OnInitializedAsync()
     {
-
-        Ingredients = await _mediatr.Send(new IngredientListQuery());
-        await SetIngredientForUpdate();
+       await RefreshIngredients();
+       selectedIngredient.ingredientName = Ingredients.FirstOrDefault().ingredientName;
+       UpdateIngredient = await _mediatr.Send(new IngredientByNameQuery(selectedIngredient));
     }
 
     //*******************************************************************************
-    private void RefreshIngredients(ChangeEventArgs args)
+    private async Task RefreshIngredients()
     {
-
-        GetIngredientData(args);
-
-        Console.WriteLine("Selected Ingredient name " + selectedIngredient.ingredientName);
-        Console.WriteLine("Ingredient name " + UpdateIngredient.ingredientName);
-
-    }
-
-    //*******************************************************************************
-    private void  GetIngredientData(ChangeEventArgs args)
-    {
-        selectedIngredient.ingredientName = args.Value.ToString();
-
-        try
-        {
-            var ingredientExist = Ingredients.FirstOrDefault(o => o.ingredientName.Equals(selectedIngredient.ingredientName, StringComparison.OrdinalIgnoreCase));
-            if (ingredientExist != null)
-            {
-                UpdateIngredient = ingredientExist;
-            }
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-    }
-
-    //*******************************************************************************
-    private async Task SetIngredientForUpdate()
-    {
-        selectedIngredient.ingredientName = Ingredients.FirstOrDefault().ingredientName;
-        UpdateIngredient = await _mediatr.Send(new IngredientByNameQuery(selectedIngredient));
+        Ingredients = await _mediatr.Send(new IngredientListQuery());     
     }
 
     //*******************************************************************************
     private async Task Selected(ChangeEventArgs args)
     {
-
-
         selectedIngredient.ingredientName = args.Value.ToString();
-        //await getIngredientData();
         UpdateIngredient = await _mediatr.Send(new IngredientByNameQuery(selectedIngredient));
-
-
-        Console.WriteLine("Selected Ingredient name " + selectedIngredient.ingredientName);
-        Console.WriteLine("Ingredient name " + UpdateIngredient.ingredientName);
-
+       // Console.WriteLine("Selected Ingredient name " + selectedIngredient.ingredientName);
+       // Console.WriteLine("Ingredient name " + UpdateIngredient.ingredientName);
     }
 
     //*******************************************************************************
     private async Task UpdateIngredientData()
     {
         await service.UpdateIngredientAsync(UpdateIngredient);
-        // await RefreshIngredients();
+       
     }
 }
