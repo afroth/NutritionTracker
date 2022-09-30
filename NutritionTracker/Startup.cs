@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NutritionTracker.Data;
 using MediatR;
+using FluentValidation;
+
 namespace NutritionTracker
 {
     public class Startup
@@ -36,6 +38,10 @@ namespace NutritionTracker
 
             services.AddScoped<IngredientService>();
             services.AddMediatR(typeof(Program));
+            services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

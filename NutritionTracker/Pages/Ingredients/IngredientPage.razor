@@ -1,25 +1,32 @@
 ﻿@page "/ingredientpage"
 
 @using NutritionTracker.Data;
+@using System.Collections;
+@using System.Collections.Generic; 
 @using NutritionTracker.Models;
 
 @inject IngredientService service
 
-<h3>Ingredient Page</h3>
-
 <div class="container">
 
-
-    <IngredientDelete></IngredientDelete>
-
-    <div class="row m-5">
-
-        <IngredientAdd></IngredientAdd>
-        <IngredientUpdate></IngredientUpdate>
-
-    </div>
+    <Tabs tabsComponents="tabsComponents"></Tabs>
+      
 </div>
 
 
 @code {
+   
+    List<IComponent> tabsComponents { set; get; } = new List<IComponent>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        AddComponentsToList();
+    }
+
+    private void AddComponentsToList()
+    {
+        tabsComponents.Add(new IngredientDelete());
+        tabsComponents.Add(new IngredientAdd());
+        tabsComponents.Add(new IngredientUpdate());
+    }
 }

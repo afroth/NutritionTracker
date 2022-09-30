@@ -11,7 +11,7 @@ using NutritionTracker.Queries;
 
 namespace NutritionTracker.Handlers
 {
-    public class IngredDetailsHandler : IRequestHandler<IngredientListQuery, List<Ingredient>>
+    public class IngredDetailsHandler : IRequestHandler<IngredListQuery, List<Ingredient>>
     {
         private readonly IngredientDbContext _db;
 
@@ -21,7 +21,7 @@ namespace NutritionTracker.Handlers
         }
 
 
-        public Task<List<Ingredient>> Handle(IngredientListQuery request, CancellationToken cancellationToken)
+        public Task<List<Ingredient>> Handle(IngredListQuery request, CancellationToken cancellationToken)
         {
             return _db.Ingredient.ToListAsync();
 

@@ -21,7 +21,7 @@ namespace NutritionTracker.Pages.Ingredients
         //*******************************************************************************
         public  async Task<Ingredient> GetIngredientData(Ingredient passedInData)
         {
-           return await Task.FromResult (returnedData = await _mediatr.Send(new IngredientByNameQuery(passedInData)));
+           return await Task.FromResult (returnedData = await _mediatr.Send(new IngredByNameQuery(passedInData)));
          
         }
 

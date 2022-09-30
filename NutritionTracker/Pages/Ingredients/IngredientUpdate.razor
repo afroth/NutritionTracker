@@ -1,11 +1,12 @@
 ﻿@using NutritionTracker.Data;
 @using NutritionTracker.Models;
 @using NutritionTracker.Pages.Ingredients.Queries;
-@using NutritionTracker.Pages;
+@using NutritionTracker.Pages.Ingredients.Commands;
 
 @inject MediatR.IMediator _mediatr
 @inject IngredientService service
 
+  
 <div class="col-5 bg-light m-2 justify-content-end">
     <div class="p-3 mb-1 bg-primary text-white text-center">Update Ingredient</div>
 
@@ -60,30 +61,28 @@
     //*******************************************************************************
     protected override async Task OnInitializedAsync()
     {
-       await RefreshIngredients();
-       selectedIngredient.ingredientName = Ingredients.FirstOrDefault().ingredientName;
-       UpdateIngredient = await _mediatr.Send(new IngredientByNameQuery(selectedIngredient));
+        await RefreshIngredients();
+        selectedIngredient.ingredientName = Ingredients.FirstOrDefault().ingredientName;
+        UpdateIngredient = await _mediatr.Send(new IngredByNameQuery(selectedIngredient));
     }
 
     //*******************************************************************************
     private async Task RefreshIngredients()
     {
-        Ingredients = await _mediatr.Send(new IngredientListQuery());     
+        Ingredients = await _mediatr.Send(new IngredListQuery());
     }
 
     //*******************************************************************************
     private async Task Selected(ChangeEventArgs args)
     {
         selectedIngredient.ingredientName = args.Value.ToString();
-        UpdateIngredient = await _mediatr.Send(new IngredientByNameQuery(selectedIngredient));
-       // Console.WriteLine("Selected Ingredient name " + selectedIngredient.ingredientName);
-       // Console.WriteLine("Ingredient name " + UpdateIngredient.ingredientName);
+        UpdateIngredient = await _mediatr.Send(new IngredByNameQuery(selectedIngredient));
+
     }
 
     //*******************************************************************************
     private async Task UpdateIngredientData()
     {
-        await service.UpdateIngredientAsync(UpdateIngredient);
-       
+        await _mediatr.Send(new IngredUpdateCommand(UpdateIngredient));
     }
 }

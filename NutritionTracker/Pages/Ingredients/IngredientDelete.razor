@@ -63,7 +63,7 @@
     // function to refresh the list of ingredients.
     private async Task RefreshIngredients()
     {
-        Ingredients = await _mediatr.Send(new IngredientListQuery());
+        Ingredients = await _mediatr.Send(new IngredListQuery());
     }
 
     //*******************************************************************************

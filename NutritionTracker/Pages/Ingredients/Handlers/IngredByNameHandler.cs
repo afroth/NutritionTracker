@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NutritionTracker.Data;
 using MediatR;
 using NutritionTracker.Pages.Ingredients.Queries;
@@ -10,7 +7,7 @@ using System.Threading;
 
 namespace NutritionTracker.Pages.Ingredients.Handlers
 {
-    public class IngredByNameHandler : IRequestHandler<IngredientByNameQuery, Ingredient>
+    public class IngredByNameHandler : IRequestHandler<IngredByNameQuery, Ingredient>
     {
         private readonly IngredientDbContext _db;
 
@@ -19,14 +16,14 @@ namespace NutritionTracker.Pages.Ingredients.Handlers
             _db = db;
         }
 
-        public async Task<Ingredient> Handle(IngredientByNameQuery request, CancellationToken cancellationToken)
+        public async Task<Ingredient> Handle(IngredByNameQuery request, CancellationToken cancellationToken)
         {
             var ingredient = new Ingredient
             {
                 ingredientName = request.IngredientName,
                 
             };
-            return _db.Ingredient.Find(ingredient.ingredientName);
+            return await _db.Ingredient.FindAsync(ingredient.ingredientName);
         }
     }
 }

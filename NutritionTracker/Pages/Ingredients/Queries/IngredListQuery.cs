@@ -8,7 +8,7 @@ using NutritionTracker.Data;
 
 namespace NutritionTracker.Queries
 {
-    public class IngredientListQuery : IRequest<List<Ingredient>>
+    public class IngredListQuery : IRequest<List<Ingredient>>
     {
       
     }

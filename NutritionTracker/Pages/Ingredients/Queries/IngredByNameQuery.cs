@@ -7,13 +7,13 @@ using NutritionTracker.Models;
 
 namespace NutritionTracker.Pages.Ingredients.Queries
 {
-    public class IngredientByNameQuery : IRequest<Ingredient>
+    public class IngredByNameQuery : IRequest<Ingredient>
     {
         public string IngredientName { get; set; }
         
         //*******************************************************************************
         // constructor
-        public IngredientByNameQuery(Ingredient ingredient)
+        public IngredByNameQuery(Ingredient ingredient)
         {
             IngredientName = ingredient.ingredientName;           
         }

@@ -34,7 +34,7 @@ namespace NutritionTracker.Pages.Ingredients.Handlers
 
             try
             {
-                //_db.Ingredient.Add(ingredient);
+                
                 await _db.SaveChangesAsync();
             }
             catch (Exception)
