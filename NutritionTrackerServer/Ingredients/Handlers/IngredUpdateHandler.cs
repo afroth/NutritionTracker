@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using NutritionTracker.Pages.Ingredients.Commands;
-using NutritionTracker.Models;
-using NutritionTracker.Data;
+using NutritionTrackerServer.Ingredients.Commands;
+using NutritionTrackerServer.Models;
+using NutritionTrackerServer.Data;
 
-namespace NutritionTracker.Pages.Ingredients.Handlers
+namespace NutritionTrackerServer.Ingredients.Handlers
 {
 
     public class IngredUpdateHandler : IRequestHandler<IngredUpdateCommand, Ingredient>

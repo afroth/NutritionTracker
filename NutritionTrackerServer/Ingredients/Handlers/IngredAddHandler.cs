@@ -1,27 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using NutritionTracker.Pages.Ingredients.Commands;
-using NutritionTracker.Models;
-using NutritionTracker.Data;
+using NutritionTrackerServer.Data;
+using NutritionTrackerServer.Models;
+using NutritionTrackerServer.Ingredients.Commands;
+using System.Threading;
 
-namespace NutritionTracker.Pages.Ingredients.Handlers
+namespace NutritionTrackerServer.Ingredients.Handlers
 {
-
-    public class IngredUpdateHandler : IRequestHandler<IngredUpdateCommand, Ingredient>
+    public class IngredAddHandler : IRequestHandler<IngredAddCommand, Ingredient>
     {
-
         private readonly IngredientDbContext _db;
 
-        public IngredUpdateHandler(IngredientDbContext db)
+        public IngredAddHandler(IngredientDbContext db)
         {
             _db = db;
         }
 
-        public async Task<Ingredient> Handle(IngredUpdateCommand request, CancellationToken cancellationToken)
+        public async Task<Ingredient> Handle(IngredAddCommand request, CancellationToken cancellationToken)
         {
             var ingredient = new Ingredient
             {
@@ -35,7 +31,7 @@ namespace NutritionTracker.Pages.Ingredients.Handlers
 
             try
             {
-                
+                _db.Ingredient.Add(ingredient);
                 await _db.SaveChangesAsync();
             }
             catch (Exception)
@@ -43,6 +39,6 @@ namespace NutritionTracker.Pages.Ingredients.Handlers
                 throw;
             }
             return ingredient;
-        }
-    }
+        }     
+    }   
 }

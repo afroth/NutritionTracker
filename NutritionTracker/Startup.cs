@@ -36,6 +36,8 @@ namespace NutritionTracker
                 option.UseSqlite("Data Source = Ingredients.db");
             });
 
+            services.AddHttpClient();
+            services.AddScoped<IHttpClientServiceImplementation, HttpClientFactoryService>();
             services.AddScoped<IngredientService>();
             services.AddMediatR(typeof(Program));
             services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
