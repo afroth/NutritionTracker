@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NutritionTrackerServer.Ingredients.Queries;
+using NutritionTrackerServer.Ingredients.Commands;
 using NutritionTrackerServer.Models;
 using MediatR;
 
@@ -25,7 +26,7 @@ namespace NutritionTrackerServer.Ingredients.Controllers
 
 
         //*******************************************************************************
-        // GET /ingredients
+        // GET
         [HttpGet]
         public async Task<IActionResult> GetAllIngredients()
         {
@@ -37,21 +38,29 @@ namespace NutritionTrackerServer.Ingredients.Controllers
         //*******************************************************************************
         // GET api/<ValuesController>/5
         // gets the ingredient by name
-        [HttpGet("{ingredient}")]
-        public async Task<Ingredient> GetAsync(Ingredient ingredient)
+        [HttpGet("{ingredientName}")]
+        public async Task<Ingredient> GetIngredByName(string ingredientName)
         {
+            var ingredient = new Ingredient
+            {
+                ingredientName = ingredientName,
+
+            };
             var query = new IngredByNameQuery(ingredient);
             var result = await _mediatr.Send(query);
 
-            return (Ingredient)(result != null ? (IActionResult) Ok(result) : NotFound());
+            return result;
         }
 
         //*******************************************************************************
-        // PUT api/<ValuesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // POST /ingredients
+        [HttpPost]
+        public async Task<Ingredient> CreateNewIngredient(Ingredient ingredient)
         {
+            var query = new IngredAddCommand(ingredient);
+            var result = await _mediatr.Send(query);
 
+            return result;
         }
 
         //*******************************************************************************
