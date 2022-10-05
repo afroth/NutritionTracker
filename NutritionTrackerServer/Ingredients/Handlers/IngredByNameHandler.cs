@@ -23,7 +23,7 @@ namespace NutritionTrackerServer.Ingredients.Handlers
                 ingredientName = request.IngredientName,
 
             };
-            return await _db.Ingredient.FindAsync(ingredient);
+            return await _db.Ingredient.FindAsync(ingredient.ingredientName);
         }
     }
 }

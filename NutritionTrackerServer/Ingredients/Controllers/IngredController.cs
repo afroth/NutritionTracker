@@ -24,7 +24,6 @@ namespace NutritionTrackerServer.Ingredients.Controllers
             _mediatr = mediatr;
         }
 
-
         //*******************************************************************************
         // GET
         [HttpGet]
@@ -33,23 +32,6 @@ namespace NutritionTrackerServer.Ingredients.Controllers
             var query = new IngredListQuery();
             var result = await _mediatr.Send(query);
             return Ok(result);
-        }
-
-        //*******************************************************************************
-        // GET api/<ValuesController>/5
-        // gets the ingredient by name
-        [HttpGet("{ingredientName}")]
-        public async Task<Ingredient> GetIngredByName(string ingredientName)
-        {
-            var ingredient = new Ingredient
-            {
-                ingredientName = ingredientName,
-
-            };
-            var query = new IngredByNameQuery(ingredient);
-            var result = await _mediatr.Send(query);
-
-            return result;
         }
 
         //*******************************************************************************
@@ -64,10 +46,32 @@ namespace NutritionTrackerServer.Ingredients.Controllers
         }
 
         //*******************************************************************************
-        // DELETE api/<ValuesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // GET ingredients/{name}
+        // gets the ingredient by name
+        [HttpGet("{name}")]
+        public async Task<ActionResult<Ingredient>> GetIngredByName(string name)
         {
+            var ingredient = new Ingredient
+            {
+                ingredientName = name
+            };
+            
+            return  await _mediatr.Send(new IngredByNameQuery(ingredient));
+
+        }
+
+        //*******************************************************************************
+        // DELETE ingredients/{delete}
+        [HttpDelete("{name}")]
+        public async Task<IActionResult> DeleteIngredByName(string name)
+        {
+            var ingredient = new Ingredient
+            {
+                ingredientName = name
+            };
+
+            await _mediatr.Send(new IngredDeleteCommand(ingredient));
+            return NoContent();
         }
     }
 }

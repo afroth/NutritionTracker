@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using NutritionTrackerServer.Ingredients.Commands;
 using NutritionTrackerServer.Data;
 using NutritionTrackerServer.Models;
@@ -28,6 +25,7 @@ namespace NutritionTrackerServer.Ingredients.Handlers
             };
 
             var removeIngredient = await _db.Ingredient.FindAsync(ingredient.ingredientName);
+
             try
             {
                 _db.Ingredient.Remove(removeIngredient);
