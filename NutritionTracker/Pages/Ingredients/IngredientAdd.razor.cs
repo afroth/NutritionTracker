@@ -14,7 +14,7 @@ namespace NutritionTracker.Pages.Ingredients
         //*******************************************************************************
         private async Task AddNewIngredient()
         {
-            // uses service IngredServices injected on razor page to add new Ingredient to db
+             // uses service IngredServices injected on razor page to add new Ingredient to db
              await service.AddNewIngredient(ingredient);
             //Refresh the component to clear boxes
             StateHasChanged();

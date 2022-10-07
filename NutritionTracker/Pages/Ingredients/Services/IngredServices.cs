@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using NutritionTracker.Models;
 
 namespace NutritionTracker.Pages.Ingredients.Services
@@ -83,7 +84,7 @@ namespace NutritionTracker.Pages.Ingredients.Services
         }
 
         //*******************************************************************************
-        public async Task AddNewIngredient(Ingredient ingredient)
+        public async Task<IActionResult> AddNewIngredient(Ingredient ingredient)
         {
             // the localhost address is "local" can be found in appsettings.json
             var client = _clientFactory.CreateClient("local");
@@ -91,14 +92,16 @@ namespace NutritionTracker.Pages.Ingredients.Services
             try
             {
                 //POST call to Api to Add an Ingredient to the db
-                 await client.PostAsJsonAsync($"ingredients", ingredient);
+                var result = await client.PostAsJsonAsync($"ingredients", ingredient);
                 // resetting value of Error message.
                 responseError = null;
+                return (IActionResult)result;
             }
             catch (Exception ex)
             {
                 // captures exeption message in responseError string.
                 responseError = $"Ingredient Add error: {ex.Message}";
+                throw;
             }
 
         }

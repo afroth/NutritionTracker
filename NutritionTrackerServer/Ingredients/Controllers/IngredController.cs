@@ -5,6 +5,7 @@ using NutritionTrackerServer.Ingredients.Commands;
 using NutritionTrackerServer.Ingredients.Validation;
 using NutritionTrackerServer.Models;
 using MediatR;
+using System.Net;
 
 namespace NutritionTrackerServer.Ingredients.Controllers
 {
