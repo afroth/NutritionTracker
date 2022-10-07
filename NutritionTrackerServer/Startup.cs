@@ -9,6 +9,7 @@ using NutritionTrackerServer.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
+using NutritionTrackerServer.Ingredients.Validation;
 
 namespace NutritionTrackerServer
 {
@@ -30,8 +31,7 @@ namespace NutritionTrackerServer
                  option.UseSqlite("Data Source = Ingredients.db");
              });
 
-            // services.AddScoped<IngredientService>();
-           
+            services.AddScoped<IngredValidation>();
             services.AddMediatR(typeof(Program));
             services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
            // services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));

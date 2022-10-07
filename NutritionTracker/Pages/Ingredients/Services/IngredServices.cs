@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
 using NutritionTracker.Models;
 
 namespace NutritionTracker.Pages.Ingredients.Services
@@ -21,7 +19,6 @@ namespace NutritionTracker.Pages.Ingredients.Services
         {
             _clientFactory = clientFactory;
         }
-
 
         //*******************************************************************************
         public async Task<List<Ingredient>> RefreshIngredients()
@@ -45,6 +42,7 @@ namespace NutritionTracker.Pages.Ingredients.Services
         {
             // the localhost address is "local" can be found in appsettings.json
             var client = _clientFactory.CreateClient("local");
+
             try
             {
                 // GET Api call to get the selected ingredient in the drop down list on razor page.
@@ -89,11 +87,11 @@ namespace NutritionTracker.Pages.Ingredients.Services
         {
             // the localhost address is "local" can be found in appsettings.json
             var client = _clientFactory.CreateClient("local");
-
+            bool doesIngredExist;
             try
             {
                 //POST call to Api to Add an Ingredient to the db
-                await client.PostAsJsonAsync($"ingredients", ingredient);
+                 await client.PostAsJsonAsync($"ingredients", ingredient);
                 // resetting value of Error message.
                 responseError = null;
             }
@@ -123,7 +121,6 @@ namespace NutritionTracker.Pages.Ingredients.Services
                 // captures exeption message in responseError string.
                 responseError = $"Ingredient Update error: {ex.Message}";
             }
-
         }
     }
 }

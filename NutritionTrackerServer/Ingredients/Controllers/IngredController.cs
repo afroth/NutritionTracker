@@ -2,10 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using NutritionTrackerServer.Ingredients.Queries;
 using NutritionTrackerServer.Ingredients.Commands;
+using NutritionTrackerServer.Ingredients.Validation;
 using NutritionTrackerServer.Models;
 using MediatR;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace NutritionTrackerServer.Ingredients.Controllers
 {
@@ -14,12 +13,14 @@ namespace NutritionTrackerServer.Ingredients.Controllers
     public class IngredController : ControllerBase
     {
         private readonly IMediator _mediatr;
+        private readonly IngredValidation _validation;
 
         //*******************************************************************************
         // constructor
-        public IngredController(IMediator mediatr)
+        public IngredController(IMediator mediatr, IngredValidation validation)
         {
             _mediatr = mediatr;
+            _validation = validation;
         }
 
         //*******************************************************************************
@@ -35,12 +36,16 @@ namespace NutritionTrackerServer.Ingredients.Controllers
         //*******************************************************************************
         // POST /ingredients
         [HttpPost]
-        public async Task<Ingredient> CreateNewIngredient(Ingredient ingredient)
-        {   
-            // adding a new ingredient into the db
-            var result = await _mediatr.Send(new IngredAddCommand(ingredient));
+        public async Task<IActionResult> CreateNewIngredient(Ingredient ingredient)
+        {
+            var doesIngredExist = _validation.IngredientExists(ingredient);
 
-            return result;
+            if (doesIngredExist.Result == true) { return Ok(true); }
+            // adding a new ingredient into the db
+            //var result = 
+            await _mediatr.Send(new IngredAddCommand(ingredient));
+
+            return Ok(false);
         }
 
         //*******************************************************************************
