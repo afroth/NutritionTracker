@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using FluentValidation;
 namespace NutritionTrackerServer.Ingredients.Queries
 {
-    public class IngredByNameQueryValidator : AbstractValidator<IngredByNameQuery>
+    public class IngredGetByIdValidator : AbstractValidator<IngredGetByIdQuery>
     {
-        public IngredByNameQueryValidator()
+        public IngredGetByIdValidator()
         {
-            RuleFor(x => x.IngredientName).NotNull();
+            RuleFor(x => x.id).NotNull();
         }
 
     }

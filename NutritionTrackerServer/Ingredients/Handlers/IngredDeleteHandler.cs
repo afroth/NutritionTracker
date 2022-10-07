@@ -21,10 +21,10 @@ namespace NutritionTrackerServer.Ingredients.Handlers
         {
             var ingredient = new Ingredient
             {
-                ingredientName = request.IngredientName, 
+                Id = request.Id, 
             };
 
-            var removeIngredient = await _db.Ingredient.FindAsync(ingredient.ingredientName);
+            var removeIngredient = await _db.Ingredient.FindAsync(ingredient.Id);
 
             try
             {

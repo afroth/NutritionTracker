@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NutritionTrackerServer.Ingredients.Queries;
 using NutritionTrackerServer.Ingredients.Commands;
@@ -18,6 +15,7 @@ namespace NutritionTrackerServer.Ingredients.Controllers
     {
         private readonly IMediator _mediatr;
 
+        //*******************************************************************************
         // constructor
         public IngredController(IMediator mediatr)
         {
@@ -25,12 +23,12 @@ namespace NutritionTrackerServer.Ingredients.Controllers
         }
 
         //*******************************************************************************
-        // GET
+        // GET /ingredients
         [HttpGet]
         public async Task<IActionResult> GetAllIngredients()
         {
-            var query = new IngredListQuery();
-            var result = await _mediatr.Send(query);
+            //query a list of all the ingreidents in the db
+            var result = await _mediatr.Send(new IngredListQuery());
             return Ok(result);
         }
 
@@ -38,39 +36,60 @@ namespace NutritionTrackerServer.Ingredients.Controllers
         // POST /ingredients
         [HttpPost]
         public async Task<Ingredient> CreateNewIngredient(Ingredient ingredient)
-        {
-            var query = new IngredAddCommand(ingredient);
-            var result = await _mediatr.Send(query);
+        {   
+            // adding a new ingredient into the db
+            var result = await _mediatr.Send(new IngredAddCommand(ingredient));
 
             return result;
         }
 
         //*******************************************************************************
-        // GET ingredients/{name}
-        // gets the ingredient by name
-        [HttpGet("{name}")]
-        public async Task<ActionResult<Ingredient>> GetIngredByName(string name)
+        // PUT /ingredients
+        [HttpPut]
+        public async Task<IActionResult> UpdateIngredient(Ingredient updatedIngredient)
         {
-            var ingredient = new Ingredient
-            {
-                ingredientName = name
-            };
+            // get the ingredient from the database tha matches the one passed in
+            var query = await _mediatr.Send(new IngredGetByIdQuery(updatedIngredient));
+
+            // assigning the values of the passed in object to the queried 
+            query.IngredientName = updatedIngredient.IngredientName;
+            query.Calories = updatedIngredient.Calories;
+            query.Fats = updatedIngredient.Fats;
+            query.Protein = updatedIngredient.Protein;
+            query.Sugar = updatedIngredient.Sugar;
+            query.Carbs = updatedIngredient.Carbs;
             
-            return  await _mediatr.Send(new IngredByNameQuery(ingredient));
+            // update the object in the db
+            await _mediatr.Send(new IngredUpdateCommand(query));
+
+            return NoContent();
+        }
+
+
+        //*******************************************************************************
+        // GET ingredients/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Ingredient>> GetIngredById(int id)
+        {
+            // assigning the id passed in to a object for query
+            var ingredient = new Ingredient{ Id = id};
+            // return the object queried by id passed in
+            return  await _mediatr.Send(new IngredGetByIdQuery(ingredient));
 
         }
 
         //*******************************************************************************
-        // DELETE ingredients/{delete}
-        [HttpDelete("{name}")]
-        public async Task<IActionResult> DeleteIngredByName(string name)
+        // DELETE ingredients/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteIngredById(int id)
         {
-            var ingredient = new Ingredient
-            {
-                ingredientName = name
-            };
-
+            // assigning the id passed in to a object for query
+            var ingredient = new Ingredient{ Id = id};
+            //object queried by id passed in
+            ingredient = await _mediatr.Send(new IngredGetByIdQuery(ingredient));
+            //delete the queried object from the database
             await _mediatr.Send(new IngredDeleteCommand(ingredient));
+
             return NoContent();
         }
     }

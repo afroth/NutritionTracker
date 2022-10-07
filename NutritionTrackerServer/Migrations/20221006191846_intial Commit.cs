@@ -2,7 +2,7 @@
 
 namespace NutritionTrackerServer.Migrations
 {
-    public partial class InitialCommit : Migration
+    public partial class intialCommit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,6 +10,8 @@ namespace NutritionTrackerServer.Migrations
                 name: "Ingredient",
                 columns: table => new
                 {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     ingredientName = table.Column<string>(maxLength: 50, nullable: false),
                     calories = table.Column<int>(nullable: false),
                     fats = table.Column<int>(nullable: false),
@@ -19,7 +21,7 @@ namespace NutritionTrackerServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ingredient", x => x.ingredientName);
+                    table.PrimaryKey("PK_Ingredient", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -38,18 +40,18 @@ namespace NutritionTrackerServer.Migrations
 
             migrationBuilder.InsertData(
                 table: "Ingredient",
-                columns: new[] { "ingredientName", "calories", "carbs", "fats", "protein", "sugar" },
-                values: new object[] { "Eggs", 90, 0, 10, 20, 0 });
+                columns: new[] { "Id", "calories", "carbs", "fats", "ingredientName", "protein", "sugar" },
+                values: new object[] { 1, 90, 0, 10, "Eggs", 20, 0 });
 
             migrationBuilder.InsertData(
                 table: "Ingredient",
-                columns: new[] { "ingredientName", "calories", "carbs", "fats", "protein", "sugar" },
-                values: new object[] { "Tuna Fish", 60, 0, 0, 36, 0 });
+                columns: new[] { "Id", "calories", "carbs", "fats", "ingredientName", "protein", "sugar" },
+                values: new object[] { 2, 60, 0, 0, "Tuna Fish", 36, 0 });
 
             migrationBuilder.InsertData(
                 table: "Ingredient",
-                columns: new[] { "ingredientName", "calories", "carbs", "fats", "protein", "sugar" },
-                values: new object[] { "Oat Meal", 120, 45, 5, 8, 0 });
+                columns: new[] { "Id", "calories", "carbs", "fats", "ingredientName", "protein", "sugar" },
+                values: new object[] { 3, 120, 45, 5, "Oat Meal", 8, 0 });
 
             migrationBuilder.InsertData(
                 table: "Users",

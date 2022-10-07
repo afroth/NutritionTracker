@@ -17,9 +17,9 @@ namespace NutritionTrackerServer.Migrations
 
             modelBuilder.Entity("NutritionTrackerServer.Models.Ingredient", b =>
                 {
-                    b.Property<string>("ingredientName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(50);
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("calories")
                         .HasColumnType("INTEGER");
@@ -30,41 +30,49 @@ namespace NutritionTrackerServer.Migrations
                     b.Property<int>("fats")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ingredientName")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(50);
+
                     b.Property<int>("protein")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("sugar")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ingredientName");
+                    b.HasKey("Id");
 
                     b.ToTable("Ingredient");
 
                     b.HasData(
                         new
                         {
-                            ingredientName = "Eggs",
+                            Id = 1,
                             calories = 90,
                             carbs = 0,
                             fats = 10,
+                            ingredientName = "Eggs",
                             protein = 20,
                             sugar = 0
                         },
                         new
                         {
-                            ingredientName = "Tuna Fish",
+                            Id = 2,
                             calories = 60,
                             carbs = 0,
                             fats = 0,
+                            ingredientName = "Tuna Fish",
                             protein = 36,
                             sugar = 0
                         },
                         new
                         {
-                            ingredientName = "Oat Meal",
+                            Id = 3,
                             calories = 120,
                             carbs = 45,
                             fats = 5,
+                            ingredientName = "Oat Meal",
                             protein = 8,
                             sugar = 0
                         });

@@ -8,8 +8,10 @@ namespace NutritionTracker.Models
 {
     public class Ingredient
     {
-        [Required]
+
         [Key]
+        public int Id { get; set; }
+        [Required]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Indgedient name cannot be longer than 50 character or shorter than 3 character.")]
         public string ingredientName { get; set; }
 

@@ -7,23 +7,23 @@ using System.Threading;
 
 namespace NutritionTrackerServer.Ingredients.Handlers
 {
-    public class IngredByNameHandler : IRequestHandler<IngredByNameQuery, Ingredient>
+    public class IngredGetByIdHandler : IRequestHandler<IngredGetByIdQuery, Ingredient>
     {
         private readonly IngredientDbContext _db;
 
-        public IngredByNameHandler(IngredientDbContext db)
+        public IngredGetByIdHandler(IngredientDbContext db)
         {
             _db = db;
         }
 
-        public async Task<Ingredient> Handle(IngredByNameQuery request, CancellationToken cancellationToken)
+        public async Task<Ingredient> Handle(IngredGetByIdQuery request, CancellationToken cancellationToken)
         {
             var ingredient = new Ingredient
             {
-                ingredientName = request.IngredientName,
+                Id = request.id,
 
             };
-            return await _db.Ingredient.FindAsync(ingredient.ingredientName);
+            return await _db.Ingredient.FindAsync(ingredient.Id);
         }
     }
 }

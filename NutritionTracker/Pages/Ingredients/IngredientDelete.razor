@@ -1,77 +1,58 @@
-﻿@using NutritionTracker.Data;
-@using NutritionTracker.Models;
-@using MediatR;
-@using NutritionTracker.Pages.Ingredients.Commands; 
+﻿@using NutritionTracker.Pages.Ingredients.Services;
 
 @inject MediatR.IMediator _mediatr
-
+@inject IngredServices service
+@inject IHttpClientFactory _clientFactory
 
 <div class="container">
-    <div class="row bg-light">
-        <table class="table table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Item Name</th>
-                    <th>Calories</th>
-                    <th>Fats</th>
-                    <th>Protein</th>
-                    <th>Sugar</th>
-                    <th>Carbs</th>
-                    <th>Delete Product</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Ingredients.Any())
-                {
-                    @foreach (var ingredient in Ingredients)
+    @if (string.IsNullOrWhiteSpace(responseError) == false)
+    {
+        <div class="h2">@responseError</div>
+    }
+    else if (Ingredients == null)
+    {
+        <div class="h4">Loading...</div>
+    }
+    else
+    {
+        <div class="row bg-light">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Calories</th>
+                        <th>Fats</th>
+                        <th>Protein</th>
+                        <th>Sugar</th>
+                        <th>Carbs</th>
+                        <th>Delete Product</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Ingredients.Any())
                     {
-                        <tr>
-                            <td>@ingredient.ingredientName</td>
-                            <td>@ingredient.calories</td>
-                            <td>@ingredient.fats</td>
-                            <td>@ingredient.protein</td>
-                            <td>@ingredient.sugar</td>
-                            <td>@ingredient.carbs</td>
+                        @foreach (var ingredient in Ingredients)
+                        {
+                            <tr>
+                                <td>@ingredient.ingredientName</td>
+                                <td>@ingredient.calories</td>
+                                <td>@ingredient.fats</td>
+                                <td>@ingredient.protein</td>
+                                <td>@ingredient.sugar</td>
+                                <td>@ingredient.carbs</td>
 
-                            <td><button class="btn btn-danger" @onclick="(() => DeleteIngredient(ingredient))">Delete</button></td>
-                        </tr>
+                                <td><button class="btn btn-danger" @onclick="(() => DeleteIngredient(ingredient))">Delete</button></td>
+                            </tr>
+                        }
                     }
-                }
-                else
-                {
-                    <tr><td colspan="6"><strong>No ingredients available</strong></td></tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                    else
+                    {
+                        <tr><td colspan="6"><strong>No ingredients available</strong></td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
 </div>
-@code {
 
-
-    List<Ingredient> Ingredients = new List<Ingredient>();
-    
-
-    //*******************************************************************************
-    // when page originally loads this function is fired.
-    protected override async Task OnInitializedAsync()
-    {
-        await RefreshIngredients();
-
-    }
-
-    //*******************************************************************************
-    // function to refresh the list of ingredients.
-    private async Task RefreshIngredients()
-    {
-        Ingredients = await _mediatr.Send(new IngredListQuery());
-    }
-
-    //*******************************************************************************
-    //
-    protected async Task DeleteIngredient(Ingredient ingredient)
-    {
-        await _mediatr.Send(new IngredDeleteCommand(ingredient));
-        await RefreshIngredients();
-    }
-
-}

@@ -1,12 +1,9 @@
 ﻿@page "/ingredientpage"
 
-@using NutritionTracker.Data;
 @using System.Collections;
 @using System.Collections.Generic; 
 @using NutritionTracker.Models;
 @using NutritionTracker.Shared.CreatedTools;
-
-@inject IngredientService service
 
 <div class="container">
 
@@ -21,10 +18,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        AddComponentsToList();
+         await AddComponentsToList();
     }
 
-    private void AddComponentsToList()
+    private async Task AddComponentsToList()
+
     {
         tabsComponents.Add(new IngredientDelete());
         tabsComponents.Add(new IngredientAdd());

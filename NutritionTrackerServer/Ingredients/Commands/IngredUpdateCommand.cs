@@ -9,6 +9,7 @@ namespace NutritionTrackerServer.Ingredients.Commands
 {
     public class IngredUpdateCommand : IRequest<Ingredient>
     {
+        public int Id { get; set; }
         public string IngredientName { get; set; }
         public int Calories { get; set; }
         public int Fats { get; set; }
@@ -20,12 +21,13 @@ namespace NutritionTrackerServer.Ingredients.Commands
         // constructor
         public IngredUpdateCommand(Ingredient ingredient)
         {
-            IngredientName = ingredient.ingredientName;
-            Calories = ingredient.calories;
-            Fats = ingredient.fats;
-            Protein = ingredient.protein;
-            Sugar = ingredient.sugar;
-            Carbs = ingredient.carbs;
+            Id = ingredient.Id;
+            IngredientName = ingredient.IngredientName;
+            Calories = ingredient.Calories;
+            Fats = ingredient.Fats;
+            Protein = ingredient.Protein;
+            Sugar = ingredient.Sugar;
+            Carbs = ingredient.Carbs;
         }
     }
 }

@@ -25,12 +25,13 @@ namespace NutritionTrackerServer.Ingredients.Handlers
         {
             var ingredient = new Ingredient
             {
-                ingredientName = request.IngredientName,
-                calories = request.Calories,
-                fats = request.Fats,
-                protein = request.Protein,
-                sugar = request.Sugar,
-                carbs = request.Carbs,
+                Id = request.Id,
+                IngredientName = request.IngredientName,
+                Calories = request.Calories,
+                Fats = request.Fats,
+                Protein = request.Protein,
+                Sugar = request.Sugar,
+                Carbs = request.Carbs,
             };
 
             try

@@ -21,12 +21,12 @@ namespace NutritionTrackerServer.Ingredients.Commands
         // constructor
         public IngredAddCommand(Ingredient ingredient)
         {
-            IngredientName =  ingredient.ingredientName;
-            Calories = ingredient.calories;
-            Fats = ingredient.fats;
-            Protein = ingredient.protein;
-            Sugar = ingredient.sugar;
-            Carbs = ingredient.carbs;
+            IngredientName =  ingredient.IngredientName;
+            Calories = ingredient.Calories;
+            Fats = ingredient.Fats;
+            Protein = ingredient.Protein;
+            Sugar = ingredient.Sugar;
+            Carbs = ingredient.Carbs;
         }
     }
 }
