@@ -10,9 +10,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NutritionTracker.Data;
+
 using MediatR;
 using FluentValidation;
+using NutritionTracker.Pages.Ingredients.Services;
 
 namespace NutritionTracker
 {
@@ -29,19 +30,18 @@ namespace NutritionTracker
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IngredServices>();
             services.AddRazorPages();
             services.AddServerSideBlazor();           
-            services.AddDbContext<IngredientDbContext>(option => 
+            services.AddHttpClient();
+            services.AddHttpClient("local", c =>
             {
-                option.UseSqlite("Data Source = Ingredients.db");
+                c.BaseAddress = new Uri(Configuration.GetValue<string>("IngredientApi"));
             });
-
-            services.AddScoped<IngredientService>();
             services.AddMediatR(typeof(Program));
             services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
-
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

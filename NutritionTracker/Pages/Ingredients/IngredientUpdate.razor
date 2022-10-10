@@ -1,88 +1,57 @@
-﻿@using NutritionTracker.Data;
-@using NutritionTracker.Models;
-@using NutritionTracker.Pages.Ingredients.Queries;
-@using NutritionTracker.Pages.Ingredients.Commands;
+﻿@using NutritionTracker.Pages.Ingredients.Services;
 
-@inject MediatR.IMediator _mediatr
-@inject IngredientService service
+@inject IngredServices service
 
-  
 <div class="col-5 bg-light m-2 justify-content-end">
     <div class="p-3 mb-1 bg-primary text-white text-center">Update Ingredient</div>
 
-    
-        <div>
-            <label for="name">Ingredient Name</label>
-            <select class="form-control" @onchange="Selected" >
 
-                @foreach (var ingredient in Ingredients)
+    <div>
+        <label for="name">Ingredient Name</label>
+        <select class="form-control" @onchange="Selected">
+
+            @if (Ingredients != null)
+            {
+                foreach (var ingredient in Ingredients)
                 {
-                    <option value="@ingredient.ingredientName" >@ingredient.ingredientName</option>
+
+                    <option value="@ingredient.Id">@ingredient.ingredientName</option>
                 }
-            </select>
-        </div>
+            }
+            else
+            {
 
-        <div class="form-group">
-            <label for="price">Calories</label>
-            <input type="text" id="price" class="form-control" @bind="@UpdateIngredient.calories" />
-        </div>
+                <label colspan="6"><strong>No ingredients available</strong></label>
+            }
+        </select>
+    </div>
 
-        <div class="form-group">
-            <label for="quantity">Fats</label>
-            <input type="text" id="quantity" class="form-control" @bind="@UpdateIngredient.fats" />
-        </div>
+    <div class="form-group">
+        <label for="price">Calories</label>
+        <input type="text" id="price" class="form-control" @bind="@ingredientToUpdate.calories" />
+    </div>
 
-        <div class="form-group">
-            <label for="Description">Protein</label>
-            <input type="text" id="Description" class="form-control" @bind="@UpdateIngredient.protein" />
-        </div>
+    <div class="form-group">
+        <label for="quantity">Fats</label>
+        <input type="text" id="quantity" class="form-control" @bind="@ingredientToUpdate.fats" />
+    </div>
 
-        <div class="form-group">
-            <label for="Description">Sugar</label>
-            <input type="text" id="Description" class="form-control" @bind="@UpdateIngredient.sugar" />
-        </div>
+    <div class="form-group">
+        <label for="Description">Protein</label>
+        <input type="text" id="Description" class="form-control" @bind="@ingredientToUpdate.protein" />
+    </div>
 
-        <div class="form-group">
-            <label for="Description">Carbs</label>
-            <input type="text" id="Description" class="form-control" @bind="@UpdateIngredient.carbs" />
-        </div>
+    <div class="form-group">
+        <label for="Description">Sugar</label>
+        <input type="text" id="Description" class="form-control" @bind="@ingredientToUpdate.sugar" />
+    </div>
 
-        <div class="text-center p-3 mb-3">
-            <button class="btn btn-info" @onclick="UpdateIngredientData"> Update Product</button>
-        </div> 
+    <div class="form-group">
+        <label for="Description">Carbs</label>
+        <input type="text" id="Description" class="form-control" @bind="@ingredientToUpdate.carbs" />
+    </div>
+
+    <div class="text-center p-3 mb-3">
+        <button class="btn btn-info" @onclick="UpdateIngredientData"> Update Product</button>
+    </div>
 </div>
-
-@code {
-
-    List<Ingredient> Ingredients { get; set; }
-    Ingredient UpdateIngredient = new Ingredient();
-    Ingredient selectedIngredient = new Ingredient();
-
-    //*******************************************************************************
-    protected override async Task OnInitializedAsync()
-    {
-        await RefreshIngredients();
-        selectedIngredient.ingredientName = Ingredients.FirstOrDefault().ingredientName;
-        UpdateIngredient = await _mediatr.Send(new IngredByNameQuery(selectedIngredient));
-    }
-
-    //*******************************************************************************
-    private async Task RefreshIngredients()
-    {
-        Ingredients = await _mediatr.Send(new IngredListQuery());
-    }
-
-    //*******************************************************************************
-    private async Task Selected(ChangeEventArgs args)
-    {
-        selectedIngredient.ingredientName = args.Value.ToString();
-        UpdateIngredient = await _mediatr.Send(new IngredByNameQuery(selectedIngredient));
-
-    }
-
-    //*******************************************************************************
-    private async Task UpdateIngredientData()
-    {
-        await _mediatr.Send(new IngredUpdateCommand(UpdateIngredient));
-    }
-}
