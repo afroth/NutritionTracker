@@ -9,7 +9,7 @@ namespace NutritionTracker.Pages.Ingredients
     public partial class IngredientAdd : ComponentBase
     {
         private Ingredient ingredient { get; set; } = new Ingredient();
-        private bool doesIngredExist;
+       // private bool doesIngredExist;
 
         //*******************************************************************************
         private async Task AddNewIngredient()

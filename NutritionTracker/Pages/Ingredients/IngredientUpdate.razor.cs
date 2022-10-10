@@ -12,7 +12,7 @@ namespace NutritionTracker.Pages.Ingredients
         List<Ingredient> Ingredients { get; set; }
         Ingredient ingredientToUpdate = new Ingredient();
         Ingredient selectedIngredient = new Ingredient();
-        string responseError;
+       // string responseError;
        
         
 

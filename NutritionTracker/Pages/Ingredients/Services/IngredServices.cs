@@ -88,7 +88,7 @@ namespace NutritionTracker.Pages.Ingredients.Services
         {
             // the localhost address is "local" can be found in appsettings.json
             var client = _clientFactory.CreateClient("local");
-            bool doesIngredExist;
+           // bool doesIngredExist;
             try
             {
                 //POST call to Api to Add an Ingredient to the db
