@@ -12,7 +12,9 @@ using Microsoft.Extensions.Hosting;
 
 using MediatR;
 using FluentValidation;
-using NutritionTracker.Pages.Ingredients.Services;
+using NutritionTracker.Pages.Ingredients.Service;
+using NutritionTracker.Pages.Users.Service;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace NutritionTracker
 {
@@ -29,7 +31,7 @@ namespace NutritionTracker
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IngredController>();
+            services.AddScoped<IngredCRUDservice>();
             services.AddRazorPages();
             services.AddServerSideBlazor();           
             services.AddHttpClient();
@@ -37,10 +39,13 @@ namespace NutritionTracker
             {
                 c.BaseAddress = new Uri(Configuration.GetValue<string>("IngredientApi"));
             });
+            services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
             services.AddMediatR(typeof(Program));
             services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-          
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddOptions();
+            services.AddAuthorizationCore();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using MediatR;
-using NutritionTrackerServer.Models;
-using NutritionTrackerServer.Data;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Ingredients.Queries
 {
     public class IngredListQuery : IRequest<List<Ingredient>>
     {
-      
+
     }
 }
 

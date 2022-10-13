@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace NutritionTrackerServer.Models
+namespace Shared.Models
 {
     public class Ingredient
     {
-       
+
         [Key]
         public int Id { get; set; }
 

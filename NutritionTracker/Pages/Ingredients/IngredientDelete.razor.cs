@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using NutritionTracker.Models;
+using Shared.Models;
 
 namespace NutritionTracker.Pages.Ingredients
 {
     public partial class IngredientDelete : ComponentBase
     {
-        readonly string responseError;
-        List<Ingredient> Ingredients = new List<Ingredient>();
-       
+        private readonly string responseError;
+        private List<Ingredient> Ingredients = new List<Ingredient>();
+
         //*******************************************************************************
         // when page originally loads this function is fired.
         protected override async Task OnInitializedAsync()
@@ -27,7 +27,7 @@ namespace NutritionTracker.Pages.Ingredients
 
             // uses service IngredServices injected on razor page to get a list of all ingredients
             // refresh so table is up to date.
-            Ingredients = await service.RefreshIngredients();          
+            Ingredients = await service.RefreshIngredients();
         }
     }
 }

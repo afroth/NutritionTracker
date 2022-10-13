@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using NutritionTrackerServer.Models;
 using NutritionTrackerServer.Users.Data;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Users.Controller
 {
-    [Route("Auth")]
+    [Route("auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -33,12 +30,15 @@ namespace NutritionTrackerServer.Users.Controller
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(UserRegister request)
         {
-            var response = await _authRepo.Register(new User
-            {
-                Username = request.Username,
-                Email = request.Email,
-                IsConfirmed = request.IsConfirmed
-            },request.Password);
+            var response = await _authRepo.Register(
+                    new User
+                    {
+                        Username = request.Username,
+                        Email = request.Email,
+                        IsConfirmed = request.IsConfirmed
+                    },
+                    request.Password
+                );
 
             if (!response.Success)
             {
@@ -52,7 +52,7 @@ namespace NutritionTrackerServer.Users.Controller
         //[HttpPost("login")]
         //public async Task <ActionResult<string>> Login(UserRegister request) 
         //{
-           
+
         //}
 
         //*******************************************************************************
@@ -100,6 +100,6 @@ namespace NutritionTrackerServer.Users.Controller
         //        return computedHash.SequenceEqual(passwordHash);
         //    }   
         //}
-        
+
     }// end class
 }// end namespace

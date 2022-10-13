@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using NutritionTracker.Models;
+using Shared.Models;
 
 namespace NutritionTracker.Pages.Ingredients
 {
     public partial class IngredientUpdate : ComponentBase
     {
-        List<Ingredient> Ingredients { get; set; }
-        Ingredient ingredientToUpdate = new Ingredient();
-        Ingredient selectedIngredient = new Ingredient();
-       // string responseError;
-       
-        
+        private List<Ingredient> Ingredients { get; set; }
+
+        private Ingredient ingredientToUpdate = new Ingredient();
+        private readonly Ingredient selectedIngredient = new Ingredient();
+        // string responseError;
+
+
 
         //*******************************************************************************
         protected override async Task OnInitializedAsync()
@@ -40,7 +41,7 @@ namespace NutritionTracker.Pages.Ingredients
         private async Task UpdateIngredientData()
         {
             await service.UpdateIngredient(ingredientToUpdate);
-            
+
         }
 
         //*******************************************************************************

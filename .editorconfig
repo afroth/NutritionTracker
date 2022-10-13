@@ -1,0 +1,28 @@
+﻿[*.cs]
+
+# Default severity for all analyzer diagnostics
+dotnet_analyzer_diagnostic.severity = error
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = silent
+
+# IDE0008: Use explicit type
+dotnet_diagnostic.IDE0008.severity = suggestion
+
+# IDE0055: Fix formatting
+dotnet_diagnostic.IDE0055.severity = suggestion
+
+# IDE0060: Remove unused parameter
+dotnet_diagnostic.IDE0060.severity = suggestion
+
+# IDE0052: Remove unread private members
+dotnet_diagnostic.IDE0052.severity = suggestion
+
+# IDE0005: Using directive is unnecessary.
+dotnet_diagnostic.IDE0005.severity = silent
+
+# IDE0044: Add readonly modifier
+dotnet_diagnostic.IDE0044.severity = suggestion
+
+# IDE0130: Namespace does not match folder structure
+dotnet_diagnostic.IDE0130.severity = warning

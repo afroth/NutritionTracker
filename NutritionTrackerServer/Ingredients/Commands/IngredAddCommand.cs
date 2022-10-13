@@ -1,10 +1,10 @@
 ﻿using MediatR;
-using NutritionTrackerServer.Models;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Ingredients.Commands
 {
-    
-   public class IngredAddCommand : IRequest<Ingredient>
+
+    public class IngredAddCommand : IRequest<Ingredient>
     {
         public string IngredientName { get; set; }
         public int Calories { get; set; }

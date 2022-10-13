@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using NutritionTrackerServer.Data;
-using NutritionTrackerServer.Models;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Users.Add
 {

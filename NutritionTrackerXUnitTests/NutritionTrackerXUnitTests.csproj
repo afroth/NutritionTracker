@@ -31,7 +31,6 @@
     <Folder Include="Client\Ingredients\Pages\" />
     <Folder Include="Client\Ingredients\Services\" />
     <Folder Include="Client\Models\" />
-    <Folder Include="Server\Models\" />
   </ItemGroup>
 
   <ItemGroup>

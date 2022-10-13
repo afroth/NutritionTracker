@@ -89,7 +89,6 @@ namespace NutritionTrackerServer.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsConfirmed")
@@ -99,15 +98,12 @@ namespace NutritionTrackerServer.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<byte[]>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("BLOB");
 
                     b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
                         .HasColumnType("BLOB");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

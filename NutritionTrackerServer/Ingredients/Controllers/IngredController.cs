@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using NutritionTrackerServer.Ingredients.Queries;
 using NutritionTrackerServer.Ingredients.Commands;
 using NutritionTrackerServer.Ingredients.Validation;
-using NutritionTrackerServer.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Ingredients.Controllers
 {
@@ -39,9 +39,9 @@ namespace NutritionTrackerServer.Ingredients.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNewIngredient(Ingredient ingredient)
         {
-            var doesIngredExist = _validation.IngredientExists(ingredient);
+            Task<bool> doesIngredExist = _validation.IngredientExists(ingredient);
 
-            if (doesIngredExist.Result == true) { return Ok(true); }
+            if (doesIngredExist.Result) { return Ok(true); }
             // adding a new ingredient into the db
             //var result = 
             await _mediatr.Send(new IngredAddCommand(ingredient));
@@ -64,7 +64,7 @@ namespace NutritionTrackerServer.Ingredients.Controllers
             query.Protein = updatedIngredient.Protein;
             query.Sugar = updatedIngredient.Sugar;
             query.Carbs = updatedIngredient.Carbs;
-            
+
             // update the object in the db
             await _mediatr.Send(new IngredUpdateCommand(query));
 
@@ -77,19 +77,19 @@ namespace NutritionTrackerServer.Ingredients.Controllers
         public async Task<ActionResult<Ingredient>> GetIngredById(int id)
         {
             // assigning the id passed in to a object for query
-            var ingredient = new Ingredient{ Id = id};
+            var ingredient = new Ingredient { Id = id };
             // return the object queried by id passed in
-            return  await _mediatr.Send(new IngredGetByIdQuery(ingredient));
+            return await _mediatr.Send(new IngredGetByIdQuery(ingredient));
 
         }
 
         //*******************************************************************************
         // DELETE ingredients/{id}
-        [HttpDelete("{id}"), Authorize]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteIngredById(int id)
         {
             // assigning the id passed in to a object for query
-            var ingredient = new Ingredient{ Id = id};
+            var ingredient = new Ingredient { Id = id };
             //object queried by id passed in
             ingredient = await _mediatr.Send(new IngredGetByIdQuery(ingredient));
             //delete the queried object from the database

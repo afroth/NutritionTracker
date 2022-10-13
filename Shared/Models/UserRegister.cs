@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace NutritionTrackerServer.Models
+namespace Shared.Models
 {
     public class UserRegister
     {
@@ -23,7 +20,7 @@ namespace NutritionTrackerServer.Models
         [Range(0, 1000, ErrorMessage = "Please choose a number between 0 and 1000")]
         public string StartUnitId { get; set; } = "1";
 
-        [Range(typeof(bool), "true", "true", ErrorMessage = "Not authorized for feature!")]
+        [Range(typeof(bool), "true", "true", ErrorMessage = "check saying you read terms and conditions!")]
         public bool IsConfirmed { get; set; } = true;
     }
 }

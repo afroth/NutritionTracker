@@ -9,7 +9,7 @@ using NutritionTrackerServer.Data;
 namespace NutritionTrackerServer.Migrations
 {
     [DbContext(typeof(IngredientDbContext))]
-    [Migration("20221012194919_Initial Commit")]
+    [Migration("20221013144850_Initial Commit")]
     partial class InitialCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,7 +91,6 @@ namespace NutritionTrackerServer.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsConfirmed")
@@ -101,15 +100,12 @@ namespace NutritionTrackerServer.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<byte[]>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("BLOB");
 
                     b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
                         .HasColumnType("BLOB");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MediatR;
-using NutritionTrackerServer.Models;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Users.Add
 {
@@ -18,5 +15,5 @@ namespace NutritionTrackerServer.Users.Add
         public bool IsDeleted { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;
     }
-       
+
 }

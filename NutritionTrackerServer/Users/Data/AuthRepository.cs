@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NutritionTrackerServer.Models;
 using NutritionTrackerServer.Data;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
-using MediatR;
-using NutritionTrackerServer.Users.Add;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Users.Data
 {
@@ -21,7 +18,7 @@ namespace NutritionTrackerServer.Users.Data
         public AuthRepository(IngredientDbContext context)
         {
             _dbContext = context;
-           // _mediatr = mediator;
+            // _mediatr = mediator;
         }
 
         //*******************************************************************************
@@ -31,14 +28,15 @@ namespace NutritionTrackerServer.Users.Data
         }
 
         //*******************************************************************************
-        public  async Task<ServiceResponse<int>> Register(User user, string password)
+        public async Task<ServiceResponse<int>> Register(User user, string password)
         {
 
-            if(await UserExists(user.Email))
+            if (await UserExists(user.Email))
             {
-                return new ServiceResponse<int> { 
-                    Success = false, 
-                    Message = "User already exists." 
+                return new ServiceResponse<int>
+                {
+                    Success = false,
+                    Message = "User already exists."
                 };
             }
 
@@ -48,10 +46,11 @@ namespace NutritionTrackerServer.Users.Data
             user.PasswordSalt = passwordSalt;
 
             await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
 
-            return new ServiceResponse<int> { 
-                Data = user.Id, 
-                Message = "Registration Successful" 
+            return new ServiceResponse<int>{
+                Data = user.Id,
+                Message = "Registration Successful"
             };
         }
 
@@ -68,7 +67,7 @@ namespace NutritionTrackerServer.Users.Data
         //*******************************************************************************
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            using (var hmac = new HMACSHA512())
+            using (HMACSHA512 hmac = new HMACSHA512())
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
@@ -78,13 +77,11 @@ namespace NutritionTrackerServer.Users.Data
         //*******************************************************************************
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            using (var hmac = new HMACSHA512(user.PasswordSalt))
-            {
-                // create new computed hash value with login password and salt
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                // if resulting passwordHash is the same as stored passwordHash then correct password.
-                return computedHash.SequenceEqual(passwordHash);
-            }
+            using HMACSHA512 hmac = new HMACSHA512(user.PasswordSalt);
+            // create new computed hash value with login password and salt
+            byte[] computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            // if resulting passwordHash is the same as stored passwordHash then correct password.
+            return computedHash.SequenceEqual(passwordHash);
         }
     }
 }

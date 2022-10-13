@@ -1,7 +1,7 @@
-﻿@using NutritionTracker.Pages.Ingredients.Services;
+﻿@using NutritionTracker.Pages.Ingredients.Service;
 
 @inject MediatR.IMediator _mediatr
-@inject IngredController service
+@inject IngredCRUDservice service
 @inject IHttpClientFactory _clientFactory
 
 <div class="container">
@@ -25,7 +25,10 @@
                         <th>Protein</th>
                         <th>Sugar</th>
                         <th>Carbs</th>
-                        <th>Delete Product</th>
+                        <AuthorizeView>
+                            <th>Delete Product</th>
+                        </AuthorizeView>
+                       
                     </tr>
                 </thead>
                 <tbody>
@@ -41,7 +44,10 @@
                                 <td>@ingredient.Sugar</td>
                                 <td>@ingredient.Carbs</td>
 
-                                <td><button class="btn btn-danger" @onclick="(() => DeleteIngredient(ingredient))">Delete</button></td>
+                                <AuthorizeView>
+                                    <td><button class="btn btn-danger" @onclick="(() => DeleteIngredient(ingredient))">Delete</button></td>
+                                </AuthorizeView>
+                                
                             </tr>
                         }
                     }

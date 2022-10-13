@@ -204,3 +204,8 @@ app {
         display: block;
     }
 }
+.required::after {
+    content: " *";
+    font-weight: bold;
+    color: red;
+}

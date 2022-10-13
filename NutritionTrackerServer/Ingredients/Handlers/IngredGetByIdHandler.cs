@@ -2,8 +2,8 @@
 using NutritionTrackerServer.Data;
 using MediatR;
 using NutritionTrackerServer.Ingredients.Queries;
-using NutritionTrackerServer.Models;
 using System.Threading;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Ingredients.Handlers
 {

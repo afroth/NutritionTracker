@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using NutritionTrackerServer.Ingredients.Commands;
-using NutritionTrackerServer.Models;
 using NutritionTrackerServer.Data;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Ingredients.Handlers
 {
@@ -36,7 +34,7 @@ namespace NutritionTrackerServer.Ingredients.Handlers
 
             try
             {
-                
+
                 await _db.SaveChangesAsync();
             }
             catch (Exception ex)

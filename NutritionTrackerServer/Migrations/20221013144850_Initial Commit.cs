@@ -31,10 +31,10 @@ namespace NutritionTrackerServer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Email = table.Column<string>(nullable: false),
-                    Username = table.Column<string>(nullable: false),
-                    PasswordHash = table.Column<byte[]>(nullable: false),
-                    PasswordSalt = table.Column<byte[]>(nullable: false),
+                    Email = table.Column<string>(nullable: true),
+                    Username = table.Column<string>(nullable: true),
+                    PasswordHash = table.Column<byte[]>(nullable: true),
+                    PasswordSalt = table.Column<byte[]>(nullable: true),
                     IsConfirmed = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     DateCreated = table.Column<DateTime>(nullable: false)
