@@ -9,7 +9,7 @@ namespace NutritionTrackerServer.Ingredients.Queries
     {
         public IngredGetByIdValidator()
         {
-            RuleFor(x => x.id).NotNull();
+            RuleFor(x => x.Id).NotNull();
         }
 
     }

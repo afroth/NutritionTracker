@@ -1,6 +1,6 @@
 ﻿@using NutritionTracker.Pages.Ingredients.Services;
 
-@inject IngredServices service
+@inject IngredController service
 
 <div class="col-5 bg-light m-2 justify-content-end">
     <div class="p-3 mb-1 bg-primary text-white text-center">Update Ingredient</div>
@@ -15,7 +15,7 @@
                 foreach (var ingredient in Ingredients)
                 {
 
-                    <option value="@ingredient.Id">@ingredient.ingredientName</option>
+                    <option value="@ingredient.Id">@ingredient.IngredientName</option>
                 }
             }
             else
@@ -28,27 +28,27 @@
 
     <div class="form-group">
         <label for="price">Calories</label>
-        <input type="text" id="price" class="form-control" @bind="@ingredientToUpdate.calories" />
+        <input type="text" id="price" class="form-control" @bind="@ingredientToUpdate.Calories" />
     </div>
 
     <div class="form-group">
         <label for="quantity">Fats</label>
-        <input type="text" id="quantity" class="form-control" @bind="@ingredientToUpdate.fats" />
+        <input type="text" id="quantity" class="form-control" @bind="@ingredientToUpdate.Fats" />
     </div>
 
     <div class="form-group">
         <label for="Description">Protein</label>
-        <input type="text" id="Description" class="form-control" @bind="@ingredientToUpdate.protein" />
+        <input type="text" id="Description" class="form-control" @bind="@ingredientToUpdate.Protein" />
     </div>
 
     <div class="form-group">
         <label for="Description">Sugar</label>
-        <input type="text" id="Description" class="form-control" @bind="@ingredientToUpdate.sugar" />
+        <input type="text" id="Description" class="form-control" @bind="@ingredientToUpdate.Sugar" />
     </div>
 
     <div class="form-group">
         <label for="Description">Carbs</label>
-        <input type="text" id="Description" class="form-control" @bind="@ingredientToUpdate.carbs" />
+        <input type="text" id="Description" class="form-control" @bind="@ingredientToUpdate.Carbs" />
     </div>
 
     <div class="text-center p-3 mb-3">

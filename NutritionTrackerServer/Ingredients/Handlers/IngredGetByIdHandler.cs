@@ -20,7 +20,7 @@ namespace NutritionTrackerServer.Ingredients.Handlers
         {
             var ingredient = new Ingredient
             {
-                Id = request.id,
+                Id = request.Id,
 
             };
             return await _db.Ingredient.FindAsync(ingredient.Id);

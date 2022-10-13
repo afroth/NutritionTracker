@@ -7,7 +7,7 @@ namespace NutritionTracker.Pages.Ingredients
 {
     public partial class IngredientDelete : ComponentBase
     {
-        string responseError;
+        readonly string responseError;
         List<Ingredient> Ingredients = new List<Ingredient>();
        
         //*******************************************************************************

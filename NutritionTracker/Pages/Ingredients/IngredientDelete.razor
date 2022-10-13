@@ -1,7 +1,7 @@
 ﻿@using NutritionTracker.Pages.Ingredients.Services;
 
 @inject MediatR.IMediator _mediatr
-@inject IngredServices service
+@inject IngredController service
 @inject IHttpClientFactory _clientFactory
 
 <div class="container">
@@ -34,12 +34,12 @@
                         @foreach (var ingredient in Ingredients)
                         {
                             <tr>
-                                <td>@ingredient.ingredientName</td>
-                                <td>@ingredient.calories</td>
-                                <td>@ingredient.fats</td>
-                                <td>@ingredient.protein</td>
-                                <td>@ingredient.sugar</td>
-                                <td>@ingredient.carbs</td>
+                                <td>@ingredient.IngredientName</td>
+                                <td>@ingredient.Calories</td>
+                                <td>@ingredient.Fats</td>
+                                <td>@ingredient.Protein</td>
+                                <td>@ingredient.Sugar</td>
+                                <td>@ingredient.Carbs</td>
 
                                 <td><button class="btn btn-danger" @onclick="(() => DeleteIngredient(ingredient))">Delete</button></td>
                             </tr>

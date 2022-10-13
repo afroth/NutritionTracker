@@ -49,6 +49,5 @@ namespace NutritionTracker.Pages.Ingredients
             // query to get the values of the first ingredient in the List Ingredients
             ingredientToUpdate = await service.GetIngredientById(selectedIngredient.Id);
         }
-  
     }
 }

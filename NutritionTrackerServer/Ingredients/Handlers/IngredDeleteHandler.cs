@@ -29,11 +29,12 @@ namespace NutritionTrackerServer.Ingredients.Handlers
             try
             {
                 _db.Ingredient.Remove(removeIngredient);
-                await _db.SaveChangesAsync();
+                await _db.SaveChangesAsync();              
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
             }
             return ingredient;
         }

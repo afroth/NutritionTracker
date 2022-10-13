@@ -5,7 +5,7 @@ using NutritionTrackerServer.Ingredients.Commands;
 using NutritionTrackerServer.Ingredients.Validation;
 using NutritionTrackerServer.Models;
 using MediatR;
-using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NutritionTrackerServer.Ingredients.Controllers
 {
@@ -26,7 +26,7 @@ namespace NutritionTrackerServer.Ingredients.Controllers
 
         //*******************************************************************************
         // GET /ingredients
-        [HttpGet]
+        [HttpGet, AllowAnonymous]
         public async Task<IActionResult> GetAllIngredients()
         {
             //query a list of all the ingreidents in the db
@@ -71,7 +71,6 @@ namespace NutritionTrackerServer.Ingredients.Controllers
             return NoContent();
         }
 
-
         //*******************************************************************************
         // GET ingredients/{id}
         [HttpGet("{id}")]
@@ -86,7 +85,7 @@ namespace NutritionTrackerServer.Ingredients.Controllers
 
         //*******************************************************************************
         // DELETE ingredients/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize]
         public async Task<IActionResult> DeleteIngredById(int id)
         {
             // assigning the id passed in to a object for query

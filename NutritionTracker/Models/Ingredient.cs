@@ -13,26 +13,26 @@ namespace NutritionTracker.Models
         public int Id { get; set; }
         [Required]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Indgedient name cannot be longer than 50 character or shorter than 3 character.")]
-        public string ingredientName { get; set; }
+        public string IngredientName { get; set; }
 
         [Required]
         [Range(0, 20000)]
-        public int calories { get; set; }
+        public int Calories { get; set; }
 
         [Required]
         [Range(0, 20000)]
-        public int fats { get; set; }
+        public int Fats { get; set; }
 
         [Required]
         [Range(0, 20000)]
-        public int protein { get; set; }
+        public int Protein { get; set; }
 
         [Required]
         [Range(0, 20000)]
-        public int sugar { get; set; }
+        public int Sugar { get; set; }
 
         [Required]
         [Range(0, 20000)]
-        public int carbs { get; set; }
+        public int Carbs { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using NutritionTracker.Models;
 
 namespace NutritionTracker.Pages.Ingredients.Services
 {
-    public class IngredServices
+    public class IngredController
     {
         private readonly IHttpClientFactory _clientFactory;
 
@@ -16,7 +16,7 @@ namespace NutritionTracker.Pages.Ingredients.Services
         string responseError;
 
         //*******************************************************************************
-        public IngredServices(IHttpClientFactory clientFactory)
+        public IngredController(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
         }

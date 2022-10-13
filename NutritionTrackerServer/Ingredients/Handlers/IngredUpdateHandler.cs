@@ -39,8 +39,10 @@ namespace NutritionTrackerServer.Ingredients.Handlers
                 
                 await _db.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
             return ingredient;

@@ -10,6 +10,10 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using NutritionTrackerServer.Ingredients.Validation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using NutritionTrackerServer.Users.Data;
 
 namespace NutritionTrackerServer
 {
@@ -25,6 +29,7 @@ namespace NutritionTrackerServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddControllers();
             services.AddDbContext<IngredientDbContext>(option =>
              {
@@ -34,7 +39,20 @@ namespace NutritionTrackerServer
             services.AddScoped<IngredValidation>();
             services.AddMediatR(typeof(Program));
             services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
-           // services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                            .GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+            // services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +62,7 @@ namespace NutritionTrackerServer
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
 
