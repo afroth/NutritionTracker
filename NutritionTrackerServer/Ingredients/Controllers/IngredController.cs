@@ -68,7 +68,7 @@ namespace NutritionTrackerServer.Ingredients.Controllers
             // update the object in the db
             await _mediatr.Send(new IngredUpdateCommand(query));
 
-            return NoContent();
+            return Ok(NoContent());
         }
 
         //*******************************************************************************
@@ -79,7 +79,7 @@ namespace NutritionTrackerServer.Ingredients.Controllers
             // assigning the id passed in to a object for query
             var ingredient = new Ingredient { Id = id };
             // return the object queried by id passed in
-            return await _mediatr.Send(new IngredGetByIdQuery(ingredient));
+            return Ok(await _mediatr.Send(new IngredGetByIdQuery(ingredient)));
 
         }
 
@@ -95,7 +95,7 @@ namespace NutritionTrackerServer.Ingredients.Controllers
             //delete the queried object from the database
             await _mediatr.Send(new IngredDeleteCommand(ingredient));
 
-            return NoContent();
+            return Ok(NoContent());
         }
     }
 }

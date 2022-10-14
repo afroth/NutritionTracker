@@ -1,0 +1,11 @@
+﻿@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager navManager
+
+
+<NavLink class="nav-link" href="login">
+    <iconify-icon icon="bi:person-bounding-box"></iconify-icon>
+    <span class="oi oi-person" aria-hidden="true"></span>
+</NavLink>
+
+<button class="link" @onclick="Logout">Logout</button>

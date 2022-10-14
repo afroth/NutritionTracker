@@ -26,3 +26,9 @@ dotnet_diagnostic.IDE0044.severity = suggestion
 
 # IDE0130: Namespace does not match folder structure
 dotnet_diagnostic.IDE0130.severity = warning
+
+# IDE0001: Simplify Names
+dotnet_diagnostic.IDE0001.severity = suggestion
+
+# IDE0059: Unnecessary assignment of a value
+dotnet_diagnostic.IDE0059.severity = suggestion

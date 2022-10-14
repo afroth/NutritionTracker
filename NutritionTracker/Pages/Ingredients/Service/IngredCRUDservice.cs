@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Models;
 
@@ -11,13 +12,16 @@ namespace NutritionTracker.Pages.Ingredients.Service
     public class IngredCRUDservice
     {
         private readonly IHttpClientFactory _clientFactory;
+        private readonly NavigationManager _navManager;
+
         private Ingredient selectedIngredient = new Ingredient();
-        private string responseError;
+       
 
         //*******************************************************************************
-        public IngredCRUDservice(IHttpClientFactory clientFactory)
+        public IngredCRUDservice(IHttpClientFactory clientFactory,NavigationManager navManager)
         {
             _clientFactory = clientFactory;
+            _navManager = navManager;
         }
 
         //*******************************************************************************
@@ -30,10 +34,11 @@ namespace NutritionTracker.Pages.Ingredients.Service
             {
                 //  GET call to Api to return a list of all the ingredients in the database.
                 return await client.GetFromJsonAsync<List<Ingredient>>("ingredients");
+               
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new ApplicationException($"Unsuccessful server response, reason: {ex.Message}");
             }
         }
 
@@ -48,15 +53,11 @@ namespace NutritionTracker.Pages.Ingredients.Service
                 // GET Api call to get the selected ingredient in the drop down list on razor page.
                 selectedIngredient = await client.GetFromJsonAsync<Ingredient>($"ingredients/{id}");
                 // resetting value of Error message.
-                responseError = null;
-
                 return selectedIngredient;
             }
             catch (Exception ex)
             {
-                // captures exeption message in responseError string.
-                responseError = $"Ingredient GET by Id error: {ex.Message}";
-                throw ex;
+                throw new ApplicationException($"Unsuccessful server response, reason: {ex.Message}");
             }
         }
 
@@ -69,17 +70,12 @@ namespace NutritionTracker.Pages.Ingredients.Service
             try
             {
                 // DELETE call to Api to delete an Ingredient by the Id passed in
-                _ = await client.DeleteAsync($"ingredients/{ingredient.Id}");
-                // resetting value of Error message.
-                responseError = null;
-
+                await client.DeleteAsync($"ingredients/{ingredient.Id}");             
             }
             catch (Exception ex)
             {
-                // captures exeption message in responseError string.
-                responseError = $"Ingredient delete error: {ex.Message}";
+                throw new ApplicationException($"Unsuccessful server response, reason: {ex.Message}");
             }
-
         }
 
         //*******************************************************************************
@@ -92,17 +88,12 @@ namespace NutritionTracker.Pages.Ingredients.Service
             {
                 //POST call to Api to Add an Ingredient to the db
                 HttpResponseMessage result = await client.PostAsJsonAsync($"ingredients", ingredient);
-                // resetting value of Error message.
-                responseError = null;
                 return (IActionResult)result;
             }
             catch (Exception ex)
             {
-                // captures exeption message in responseError string.
-                responseError = $"Ingredient Add error: {ex.Message}";
-                throw;
+                throw new ApplicationException($"Unsuccessful server response, reason: {ex.Message}");
             }
-
         }
 
         //*******************************************************************************
@@ -114,14 +105,11 @@ namespace NutritionTracker.Pages.Ingredients.Service
             try
             {
                 //POST call to Api to Add an Ingredient to the db
-                _ = await client.PutAsJsonAsync($"ingredients", ingredient);
-                // resetting value of Error message.
-                responseError = null;
+                await client.PutAsJsonAsync($"ingredients", ingredient);
             }
             catch (Exception ex)
             {
-                // captures exeption message in responseError string.
-                responseError = $"Ingredient Update error: {ex.Message}";
+                throw new ApplicationException($"Unsuccessful server response, reason: {ex.Message}");
             }
         }
     }

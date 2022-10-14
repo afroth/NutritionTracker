@@ -1,26 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace NutritionTracker
 {
     public class CustomAuthStateProvider : AuthenticationStateProvider
     {
-        public override Task<AuthenticationState> GetAuthenticationStateAsync()
+        private readonly ILocalStorageService _localStorageService;
+        public CustomAuthStateProvider(ILocalStorageService localStorage)
         {
-            return Task.FromResult(new AuthenticationState(new ClaimsPrincipal()));
+            _localStorageService = localStorage;
+        }
 
-            var identity = new ClaimsIdentity(new[]
+        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+        {
+            var state = new AuthenticationState(new ClaimsPrincipal());
+
+            if (await _localStorageService.GetItemAsync<bool>("isAuthenticated"))
             {
+                var identity = new ClaimsIdentity(new[]
+                {
                 new Claim(ClaimTypes.Name,"Admin")
             }, "test authentication type");
 
-            var user = new ClaimsPrincipal(identity);
+                var user = new ClaimsPrincipal(identity);
+                state = new AuthenticationState(user);
+            }
 
-            return Task.FromResult(new AuthenticationState(user));
+            NotifyAuthenticationStateChanged(Task.FromResult(state));
+
+            return state;
         }
-    }
-}
+    }// end class
+}// end namespace
