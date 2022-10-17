@@ -1,0 +1,13 @@
+﻿
+
+@using NutritionTracker.Pages.Users
+
+<AuthorizeView>
+    <Authorized>
+        <h3>Hi, @context.User.Identity.Name welcome back.</h3>
+    </Authorized>
+    <NotAuthorized>
+        <h3>Welcome</h3>
+        <UserLoginPage></UserLoginPage>
+    </NotAuthorized>
+</AuthorizeView>

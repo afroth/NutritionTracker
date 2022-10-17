@@ -2,8 +2,8 @@
 using NutritionTrackerServer.Data;
 using MediatR;
 using NutritionTrackerServer.Ingredients.Queries;
-using NutritionTrackerServer.Models;
 using System.Threading;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Ingredients.Handlers
 {
@@ -20,7 +20,7 @@ namespace NutritionTrackerServer.Ingredients.Handlers
         {
             var ingredient = new Ingredient
             {
-                Id = request.id,
+                Id = request.Id,
 
             };
             return await _db.Ingredient.FindAsync(ingredient.Id);

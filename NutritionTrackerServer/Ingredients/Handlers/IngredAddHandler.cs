@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using MediatR;
 using NutritionTrackerServer.Data;
-using NutritionTrackerServer.Models;
 using NutritionTrackerServer.Ingredients.Commands;
 using System.Threading;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Ingredients.Handlers
 {
@@ -19,7 +19,7 @@ namespace NutritionTrackerServer.Ingredients.Handlers
 
         public async Task<Ingredient> Handle(IngredAddCommand request, CancellationToken cancellationToken)
         {
-            var ingredient = new Ingredient
+            Ingredient ingredient = new Ingredient
             {
                 IngredientName = request.IngredientName,
                 Calories = request.Calories,
@@ -34,11 +34,12 @@ namespace NutritionTrackerServer.Ingredients.Handlers
                 _db.Ingredient.Add(ingredient);
                 await _db.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
             }
             return ingredient;
-        }     
-    }   
+        }
+    }
 }

@@ -1,17 +1,17 @@
 ﻿using MediatR;
-using NutritionTrackerServer.Models;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Ingredients.Queries
 {
     public class IngredGetByIdQuery : IRequest<Ingredient>
     {
-        public int id { get; set; }
-        
+        public int Id { get; set; }
+
         //*******************************************************************************
         // constructor
         public IngredGetByIdQuery(Ingredient ingredient)
         {
-            id = ingredient.Id;           
+            Id = ingredient.Id;
         }
     }
 }

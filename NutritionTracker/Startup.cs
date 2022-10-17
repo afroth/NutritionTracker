@@ -1,19 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 using MediatR;
 using FluentValidation;
-using NutritionTracker.Pages.Ingredients.Services;
+using NutritionTracker.Pages.Ingredients.Service;
+using NutritionTracker.Pages.Users.Service;
+using Microsoft.AspNetCore.Components.Authorization;
+using Blazored.LocalStorage;
+using Blazored.Toast;
 
 namespace NutritionTracker
 {
@@ -30,18 +27,21 @@ namespace NutritionTracker
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IngredServices>();
+            services.AddOptions();
             services.AddRazorPages();
-            services.AddServerSideBlazor();           
             services.AddHttpClient();
-            services.AddHttpClient("local", c =>
-            {
-                c.BaseAddress = new Uri(Configuration.GetValue<string>("IngredientApi"));
-            });
+            services.AddBlazoredToast();
+            services.AddServerSideBlazor();
+            services.AddAuthorizationCore();
+            services.AddBlazoredLocalStorage();
             services.AddMediatR(typeof(Program));
+            services.AddScoped<IngredCRUDservice>();
+            services.AddScoped<IAuthService, AuthService>();
             services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
+            services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-          
+            services.AddHttpClient("local", c =>{c.BaseAddress = new Uri(Configuration.GetValue<string>("IngredientApi"));});
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

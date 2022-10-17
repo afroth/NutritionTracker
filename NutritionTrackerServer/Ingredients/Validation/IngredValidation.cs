@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using NutritionTrackerServer.Ingredients.Queries;
-using NutritionTrackerServer.Ingredients.Commands;
-using NutritionTrackerServer.Models;
+﻿using NutritionTrackerServer.Ingredients.Queries;
 using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Ingredients.Validation
 {
@@ -18,7 +14,7 @@ namespace NutritionTrackerServer.Ingredients.Validation
         {
             _mediatr = mediatr;
         }
-        
+
         // checks if another ingredient with the same name exists in the database.
         public async Task<bool> IngredientExists(Ingredient ingredient)
         {
@@ -29,7 +25,7 @@ namespace NutritionTrackerServer.Ingredients.Validation
             }
 
             return false;
-               
+
         }
 
     }// end class

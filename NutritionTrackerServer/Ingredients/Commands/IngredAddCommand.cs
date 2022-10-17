@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MediatR;
-using NutritionTrackerServer.Models;
+﻿using MediatR;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Ingredients.Commands
 {
-    
-   public class IngredAddCommand : IRequest<Ingredient>
+
+    public class IngredAddCommand : IRequest<Ingredient>
     {
         public string IngredientName { get; set; }
         public int Calories { get; set; }

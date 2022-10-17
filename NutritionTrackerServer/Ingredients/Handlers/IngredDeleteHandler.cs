@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using NutritionTrackerServer.Ingredients.Commands;
 using NutritionTrackerServer.Data;
-using NutritionTrackerServer.Models;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Ingredients.Handlers
 {
@@ -21,7 +21,7 @@ namespace NutritionTrackerServer.Ingredients.Handlers
         {
             var ingredient = new Ingredient
             {
-                Id = request.Id, 
+                Id = request.Id,
             };
 
             var removeIngredient = await _db.Ingredient.FindAsync(ingredient.Id);
@@ -31,11 +31,12 @@ namespace NutritionTrackerServer.Ingredients.Handlers
                 _db.Ingredient.Remove(removeIngredient);
                 await _db.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
             }
             return ingredient;
         }
-    }    
+    }
 }

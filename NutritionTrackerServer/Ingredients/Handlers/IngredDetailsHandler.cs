@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NutritionTrackerServer.Data;
-using NutritionTrackerServer.Models;
 using NutritionTrackerServer.Ingredients.Queries;
+using Shared.Models;
 
 namespace NutritionTrackerServer.Ingredients.Handlers
 {

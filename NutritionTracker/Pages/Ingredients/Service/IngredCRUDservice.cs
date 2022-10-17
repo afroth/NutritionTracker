@@ -3,38 +3,42 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
-using NutritionTracker.Models;
+using Shared.Models;
 
-namespace NutritionTracker.Pages.Ingredients.Services
+namespace NutritionTracker.Pages.Ingredients.Service
 {
-    public class IngredServices
+    public class IngredCRUDservice
     {
         private readonly IHttpClientFactory _clientFactory;
+        private readonly NavigationManager _navManager;
 
-        Ingredient selectedIngredient = new Ingredient();
-        string responseError;
+        private Ingredient selectedIngredient = new Ingredient();
+       
 
         //*******************************************************************************
-        public IngredServices(IHttpClientFactory clientFactory)
+        public IngredCRUDservice(IHttpClientFactory clientFactory,NavigationManager navManager)
         {
             _clientFactory = clientFactory;
+            _navManager = navManager;
         }
 
         //*******************************************************************************
         public async Task<List<Ingredient>> RefreshIngredients()
         {
             // the localhost address is "local" can be found in appsettings.json
-            var client = _clientFactory.CreateClient("local");
+            HttpClient client = _clientFactory.CreateClient("local");
 
             try
             {
                 //  GET call to Api to return a list of all the ingredients in the database.
                 return await client.GetFromJsonAsync<List<Ingredient>>("ingredients");
+               
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new ApplicationException($"Unsuccessful server response, reason: {ex.Message}");
             }
         }
 
@@ -42,22 +46,18 @@ namespace NutritionTracker.Pages.Ingredients.Services
         public async Task<Ingredient> GetIngredientById(int id)
         {
             // the localhost address is "local" can be found in appsettings.json
-            var client = _clientFactory.CreateClient("local");
+            HttpClient client = _clientFactory.CreateClient("local");
 
             try
             {
                 // GET Api call to get the selected ingredient in the drop down list on razor page.
                 selectedIngredient = await client.GetFromJsonAsync<Ingredient>($"ingredients/{id}");
                 // resetting value of Error message.
-                responseError = null;
-
                 return selectedIngredient;
             }
             catch (Exception ex)
             {
-                // captures exeption message in responseError string.
-                responseError = $"Ingredient GET by Id error: {ex.Message}";
-                throw ex;
+                throw new ApplicationException($"Unsuccessful server response, reason: {ex.Message}");
             }
         }
 
@@ -65,64 +65,51 @@ namespace NutritionTracker.Pages.Ingredients.Services
         public async Task DeleteIngredient(Ingredient ingredient)
         {
             // the localhost address is "local" can be found in appsettings.json
-            var client = _clientFactory.CreateClient("local");
+            HttpClient client = _clientFactory.CreateClient("local");
 
             try
             {
                 // DELETE call to Api to delete an Ingredient by the Id passed in
-                await client.DeleteAsync($"ingredients/{ingredient.Id}");
-                // resetting value of Error message.
-                responseError = null;
-               
+                await client.DeleteAsync($"ingredients/{ingredient.Id}");             
             }
             catch (Exception ex)
             {
-                // captures exeption message in responseError string.
-                responseError = $"Ingredient delete error: {ex.Message}";
+                throw new ApplicationException($"Unsuccessful server response, reason: {ex.Message}");
             }
-
         }
 
         //*******************************************************************************
         public async Task<IActionResult> AddNewIngredient(Ingredient ingredient)
         {
             // the localhost address is "local" can be found in appsettings.json
-            var client = _clientFactory.CreateClient("local");
-            bool doesIngredExist;
+            HttpClient client = _clientFactory.CreateClient("local");
+            // bool doesIngredExist;
             try
             {
                 //POST call to Api to Add an Ingredient to the db
-                var result = await client.PostAsJsonAsync($"ingredients", ingredient);
-                // resetting value of Error message.
-                responseError = null;
+                HttpResponseMessage result = await client.PostAsJsonAsync($"ingredients", ingredient);
                 return (IActionResult)result;
             }
             catch (Exception ex)
             {
-                // captures exeption message in responseError string.
-                responseError = $"Ingredient Add error: {ex.Message}";
-                throw;
+                throw new ApplicationException($"Unsuccessful server response, reason: {ex.Message}");
             }
-
         }
 
         //*******************************************************************************
         public async Task UpdateIngredient(Ingredient ingredient)
         {
             // the localhost address is "local" can be found in appsettings.json
-            var client = _clientFactory.CreateClient("local");
+            HttpClient client = _clientFactory.CreateClient("local");
 
             try
             {
                 //POST call to Api to Add an Ingredient to the db
                 await client.PutAsJsonAsync($"ingredients", ingredient);
-                // resetting value of Error message.
-                responseError = null;
             }
             catch (Exception ex)
             {
-                // captures exeption message in responseError string.
-                responseError = $"Ingredient Update error: {ex.Message}";
+                throw new ApplicationException($"Unsuccessful server response, reason: {ex.Message}");
             }
         }
     }
