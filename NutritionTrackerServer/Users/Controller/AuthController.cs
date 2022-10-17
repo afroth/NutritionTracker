@@ -11,7 +11,7 @@ using Shared.Models;
 
 namespace NutritionTrackerServer.Users.Controller
 {
-    [Route("auth")]
+    [Route("Auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -49,57 +49,16 @@ namespace NutritionTrackerServer.Users.Controller
 
         //*******************************************************************************
         //POST PATH /Auth/login
-        //[HttpPost("login")]
-        //public async Task <ActionResult<string>> Login(UserRegister request) 
-        //{
-
-        //}
-
-        //*******************************************************************************
-        private string CreateToken(User user)
+        [HttpPost("login")]
+        public async Task <ActionResult<string>> Login(UserLogin request) 
         {
-            List<Claim> claims = new List<Claim>
+            var response = await _authRepo.Login( request.Email,request.Password);
+
+            if (!response.Success)
             {
-                new Claim(ClaimTypes.Name, user.Username)
-            };
-
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
-                _configuration.GetSection("AppSettings:Token").Value));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddHours(1),
-                signingCredentials: creds
-                );
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return jwt;
+                return BadRequest(response);
+            }
+            return Ok(response);
         }
-
-        ////*******************************************************************************
-        //private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        //{
-        //    using (var hmac = new HMACSHA512())
-        //    {
-        //        passwordSalt = hmac.Key;
-        //        passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-        //    }
-        //}
-
-        ////*******************************************************************************
-        //private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        //{
-        //    using (var hmac = new HMACSHA512(user.PasswordSalt))
-        //    {
-        //        // create new computed hash value with login password and salt
-        //        var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-        //        // if resulting passwordHash is the same as stored passwordHash then correct password.
-        //        return computedHash.SequenceEqual(passwordHash);
-        //    }   
-        //}
-
     }// end class
 }// end namespace

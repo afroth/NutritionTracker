@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using NutritionTrackerServer.Users.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace NutritionTrackerServer
 {
@@ -52,8 +53,10 @@ namespace NutritionTrackerServer
                         ValidateAudience = false
                     };
                 });
-            // services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-        }
+           
+        
+        // services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+    }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

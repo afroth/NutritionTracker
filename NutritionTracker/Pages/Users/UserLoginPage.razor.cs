@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Shared.Models;
 
 namespace NutritionTracker.Pages.Users
@@ -12,8 +9,18 @@ namespace NutritionTracker.Pages.Users
 
         private async void HandleLoginAsync()
         {
-            await LocalStorage.SetItemAsync<bool>("isAuthenticated", true);
-            await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var result = await AuthService.Login(user);
+
+            if (result.Success)
+            {
+                await LocalStorage.SetItemAsync<string>("authToken", result.Data);
+                await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            }
+            else
+            {
+                ToastService.ShowError(result.Message);
+            }
+           
         }
 
     }// end class

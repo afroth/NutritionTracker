@@ -10,7 +10,7 @@ namespace NutritionTracker.Shared
     {
         private async void Logout()
         {
-            await LocalStorage.RemoveItemAsync("IsAuthenticated");
+            await LocalStorage.RemoveItemAsync("authToken");
             await AuthStateProvider.GetAuthenticationStateAsync();
 
             navManager.NavigateTo("/");

@@ -5,26 +5,49 @@ using NutritionTrackerServer.Data;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using Shared.Models;
+using System.Collections.Generic;
+using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace NutritionTrackerServer.Users.Data
 {
     public class AuthRepository : IAuthRepository
     {
         private readonly IngredientDbContext _dbContext;
+        private readonly IConfiguration _configuration;
+
         //private readonly IMediator _mediatr;
         public static User user = new User();
 
         //*******************************************************************************
-        public AuthRepository(IngredientDbContext context)
+        public AuthRepository(IngredientDbContext context, IConfiguration configuration)
         {
             _dbContext = context;
+            _configuration = configuration;
             // _mediatr = mediator;
         }
 
         //*******************************************************************************
-        public Task<ServiceResponse<string>> Login(string email, string password)
+        public async Task<ServiceResponse<string>> Login(string email, string password)
         {
-            throw new NotImplementedException();
+            var response = new ServiceResponse<string>();
+            // trys to find a existing email with the passed in email
+            var user = await _dbContext.Users.FirstOrDefaultAsync(user => user.Email.ToLower().Equals(email.ToLower()));
+            // checking if the username and password are equal. if either do not match return false
+            if (user == null || !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            {
+                // false match on either password or username
+                response.Success = false;
+                response.Message = "Username or password not found!";
+            }
+            else
+            {
+                // both username and password are a match
+                response.Data = CreateToken(user);
+            }
+            return response;
         }
 
         //*******************************************************************************
@@ -77,11 +100,37 @@ namespace NutritionTrackerServer.Users.Data
         //*******************************************************************************
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            using HMACSHA512 hmac = new HMACSHA512(user.PasswordSalt);
-            // create new computed hash value with login password and salt
-            byte[] computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            // if resulting passwordHash is the same as stored passwordHash then correct password.
-            return computedHash.SequenceEqual(passwordHash);
+            using (var hmac = new HMACSHA512(passwordSalt)) {
+                // create new computed hash value with login password and salt
+                byte[] computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                // if resulting passwordHash is the same as stored passwordHash then correct password.
+                return computedHash.SequenceEqual(passwordHash);
+            }
         }
-    }
-}
+
+        //*******************************************************************************
+        private string CreateToken(User user)
+        {
+            List<Claim> Claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username)
+            };
+           
+
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+                _configuration.GetSection("AppSettings:Token").Value));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var token = new JwtSecurityToken(
+                claims: Claims,
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: creds
+                );
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return jwt;
+        }
+    }// end class
+}// end namespace

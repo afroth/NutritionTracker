@@ -19,9 +19,18 @@ namespace NutritionTracker.Pages.Users.Service
        {
             HttpClient client = _clientFactory.CreateClient("local");
 
-            var result = await client.PostAsJsonAsync("api/Auth/register", request);
+            var result = await client.PostAsJsonAsync("Auth/register", request);
 
             return await result.Content.ReadFromJsonAsync<ServiceResponse<int>>();
+        }
+
+        public async Task<ServiceResponse<string>> Login(UserLogin request)
+        {
+            HttpClient client = _clientFactory.CreateClient("local");
+
+            var result = await client.PostAsJsonAsync("Auth/login", request);
+
+            return await result.Content.ReadFromJsonAsync<ServiceResponse<string>>();
         }
     }
 }

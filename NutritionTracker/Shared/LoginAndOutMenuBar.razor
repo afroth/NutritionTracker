@@ -8,4 +8,11 @@
     <span class="oi oi-person" aria-hidden="true"></span>
 </NavLink>
 
-<button class="link" @onclick="Logout">Logout</button>
+<AuthorizeView>
+    <Authorized>
+        <a class="nav-link" @onclick="Logout" style="cursor: pointer;">
+            <iconify-icon icon="carbon:logout"></iconify-icon>
+            <span class="oi oi-account-logout" aria-hidden="true"></span>
+        </a>
+    </Authorized>
+</AuthorizeView>

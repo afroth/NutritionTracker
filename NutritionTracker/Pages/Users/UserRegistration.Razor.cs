@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Shared.Models;
 
 namespace NutritionTracker.Pages.Users
@@ -11,10 +7,19 @@ namespace NutritionTracker.Pages.Users
     {
         private UserRegister user = new UserRegister();
 
-        public void HandleRegistration()
+        private async void HandleRegistration()
         {
-            NavigationManager.NavigateTo("login");
+            var result = await AuthService.Register(user);
 
+            if (result.Success)
+            {
+                ToastService.ShowSuccess(result.Message);
+                NavigationManager.NavigateTo("");
+            }
+            else
+            {
+                ToastService.ShowError(result.Message);
+            }
         }
     }
 }
