@@ -15,5 +15,6 @@ namespace Shared.Models
         public bool IsConfirmed { set; get; }
         public bool IsDeleted { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;
+        public string Role { get; set; } = "BasicUser";
     }
 }

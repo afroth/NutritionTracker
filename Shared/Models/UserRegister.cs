@@ -8,7 +8,7 @@ namespace Shared.Models
         [Required, EmailAddress]
         public string Email { get; set; }
 
-        [StringLength(16, ErrorMessage = "Your username is too long (16 characters max)")]
+        [Required,StringLength(16, ErrorMessage = "Your username is too long (16 characters max)")]
         public string Username { get; set; }
 
         [Required, StringLength(100, MinimumLength = 6)]

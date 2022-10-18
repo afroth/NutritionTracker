@@ -1,0 +1,44 @@
+﻿@using NutritionTracker.Pages.Admin; 
+
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager navManager
+<style>
+    .show-menu {
+        display: block;
+    }
+
+    .user-button {
+        margin-left: .5em;
+    }
+
+    .top-row a {
+        margin-left: 0;
+    }
+
+    .dropdown-item:hover {
+        background-color: white;
+    }
+</style>
+
+<div class="dropdown">
+    <button @onclick="ToggleUserMenu"
+            @onfocusout="HideUserMenu"
+            class="btn btn-secondary dropdown-toggle user-button">
+        <i class="oi oi-person"></i>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right @UserMenuCssClass">
+        <AuthorizeView>
+            <Authorized>
+                
+                <hr />
+                
+                <button class="dropdown-item" @onclick="Logout">Logout</button>
+            </Authorized>
+            <NotAuthorized>
+                <a href="login?returnUrl=@navManager.ToBaseRelativePath(navManager.Uri)" class="dropdown-item">Login</a>
+                <a href="register" class="dropdown-item">Register</a>
+            </NotAuthorized>
+        </AuthorizeView>
+    </div>
+</div>

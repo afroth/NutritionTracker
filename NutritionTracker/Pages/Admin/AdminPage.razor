@@ -1,0 +1,11 @@
+﻿@page "/admin"
+
+@using System.Security.Claims
+
+@attribute [Authorize(Roles = "Admin")]
+
+@inject AuthenticationStateProvider AuthStateProvider
+
+<h3>AdminPage</h3>
+
+

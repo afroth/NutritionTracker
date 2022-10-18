@@ -25,8 +25,10 @@
                         <th>Protein</th>
                         <th>Sugar</th>
                         <th>Carbs</th>
-                        <AuthorizeView>
-                            <th>Delete Product</th>
+                        <AuthorizeView Roles="Admin">
+                            <Authorized >
+                                <th>Delete Product</th>
+                            </Authorized>
                         </AuthorizeView>
                        
                     </tr>
@@ -44,8 +46,11 @@
                                 <td>@ingredient.Sugar</td>
                                 <td>@ingredient.Carbs</td>
 
-                                <AuthorizeView>
-                                    <td><button class="btn btn-danger" @onclick="(() => DeleteIngredient(ingredient))">Delete</button></td>
+                                <AuthorizeView Roles="Admin">
+                                    <Authorized >
+                                        <td><button class="btn btn-danger" @onclick="(() => DeleteIngredient(ingredient))">Delete</button></td>
+                                    </Authorized>
+                                   
                                 </AuthorizeView>
                                 
                             </tr>
