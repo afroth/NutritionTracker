@@ -1,0 +1,69 @@
+﻿@using NutritionTracker.Pages.Ingredients.Service;
+
+@inject MediatR.IMediator _mediatr
+@inject IngredCRUDservice service
+@inject IHttpClientFactory _clientFactory
+
+<div class="container">
+    @if (string.IsNullOrWhiteSpace(responseError) == false)
+    {
+        <div class="h2">@responseError</div>
+    }
+    else if (Ingredients == null)
+    {
+        <div class="h4">Loading...</div>
+    }
+    else
+    {
+        <div class="row bg-light">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Calories</th>
+                        <th>Fats</th>
+                        <th>Protein</th>
+                        <th>Sugar</th>
+                        <th>Carbs</th>
+                        <AuthorizeView Roles="Admin">
+                            <Authorized >
+                                <th>Delete Product</th>
+                            </Authorized>
+                        </AuthorizeView>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Ingredients.Any())
+                    {
+                        @foreach (var ingredient in Ingredients)
+                        {
+                            <tr>
+                                <td>@ingredient.IngredientName</td>
+                                <td>@ingredient.Calories</td>
+                                <td>@ingredient.Fats</td>
+                                <td>@ingredient.Protein</td>
+                                <td>@ingredient.Sugar</td>
+                                <td>@ingredient.Carbs</td>
+
+                                <AuthorizeView Roles="Admin">
+                                    <Authorized >
+                                        <td><button class="btn btn-danger" @onclick="(() => DeleteIngredient(ingredient))">Delete</button></td>
+                                    </Authorized>
+                                   
+                                </AuthorizeView>
+                                
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="6"><strong>No ingredients available</strong></td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+</div>
+
